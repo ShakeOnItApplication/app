@@ -99,8 +99,7 @@ app.get('/', (req, res)=>{
   const db = req.app.get('db');
   db.getUsers().then((response)=>{
     console.log(response)
-  }
-  )
+  });
 });
 
 app.listen(port, function() {
