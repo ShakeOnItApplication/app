@@ -103,6 +103,8 @@ app.get('/', (req, res)=>{
   });
 });
 
-app.listen(port, function() {
+const server = app.listen(port, function() {
   console.log(`server listening on ${port}`);
-})
+});
+
+module.exports = server;
