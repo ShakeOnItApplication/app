@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const port = 3000;
+const port = 3030;
 const express = require('express');
 const session = require('express-session');
 const massive = require('massive');
@@ -52,6 +52,7 @@ app.use(bodyParser.json());
 // Login Function
 passport.use(new LocalStrategy(function (username, password, done) {
   const db = app.get('db');
+  console.log(db.users);
   db.users.findOne({ 'username': username }).then(function (user) {
     if (!user) {
       return done(null, false, {message: 'incorrect user'});
