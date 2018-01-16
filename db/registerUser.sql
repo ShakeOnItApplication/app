@@ -1,2 +1,2 @@
-INSERT INTO users (username, password, email, firstname, lastname)
-VALUES (${username}, ${password}, ${email}, ${firstname}, ${lastname});
+INSERT INTO users (username, password, email, first_name, last_name)
+VALUES (${username}, ${password}, ${email}, ${first_name}, ${last_name});

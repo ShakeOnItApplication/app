@@ -21,23 +21,25 @@ app.use(cookieParser());
 // app.use(express.static(`${__dirname}/build`));
 app.use(flash());
 
+
+const connectionString = process.env.DATABASE_URL;
+const massiveConnection = massive(connectionString)
+.then(db => {
+  app.set('db', db);
+})
+.catch(err => {
+  console.log(err);
+});
+                
 app.use(session({
   secret: process.env.secret,
   resave: true,
   saveUninitialized: true
 }));
 
-const connectionString = process.env.DATABASE_URL;
-const massiveConnection = massive(connectionString)
-.then(db => {
-    app.set('db', db);
-})
-.catch(err => {
-    console.log(err);
-});
-
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 
 passport.serializeUser((user, done) => {
   done(null, { user });
@@ -46,14 +48,18 @@ passport.deserializeUser((obj, done) => {
   done(null, obj);
 });
 
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));  
+app.use(cookieParser());  
 
 // Login Function
-passport.use(new LocalStrategy(function (username, password, done) {
-  const db = app.get('db');
-  console.log(db.users);
-  db.users.findOne({ 'username': username }).then(function (user) {
+passport.use(new LocalStrategy({
+  usernameField: 'username',
+  passwordField: 'password'
+}, function (username, password, done) {
+    const db = app.get('db');
+    const Users = db.getUsers().then((users)=>{
+    const user = users.filter(user=>user.username === username)[0];
     if (!user) {
       return done(null, false, {message: 'incorrect user'});
     }
@@ -74,13 +80,13 @@ app.post('/api/registerUser', (req, res) => {
       db.registerUser(req.body)
         .then(() => passport.authenticate('local'))
         .then(function() {
-          res.send(req.session);
+          res.send({ userid: req.session.passport.user.user.user_id });
         });
     });
   });
 
 app.post('/auth/login', passport.authenticate('local', { failureFlash: true }), (req, res) => {
-    res.send({userid: req.session.passport.user.user.userid});
+    res.send({ userid: req.session.passport.user.user.user_id });
 });
 
   // Auth Check Function
