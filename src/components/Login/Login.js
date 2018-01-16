@@ -48,51 +48,6 @@ export default class Login extends Component {
                     </div>
                 }
             </div>
-          </div>
-        ) : (
-          <div>
-            <div>Username</div>
-            <input
-              type="text"
-              onChange={e => this.setState({ username: e.target.value })}
-            />
-            <div>Password</div>
-            <input
-              type="text"
-              onChange={e => this.setState({ password: e.target.value })}
-            />
-            <div>Email</div>
-            <input
-              type="text"
-              onChange={e => this.setState({ email: e.target.value })}
-            />
-            <div>First Name</div>
-            <input
-              type="text"
-              onChange={e => this.setState({ first_name: e.target.value })}
-            />
-            <div>Last Name</div>
-            <input
-              type="text"
-              onChange={e => this.setState({ last_name: e.target.value })}
-            />
-            <button
-              onClick={() =>
-                this.registerUser({
-                  username: this.state.username,
-                  password: this.state.password,
-                  email: this.state.email,
-                  first_name: this.state.first_name,
-                  last_name: this.state.last_name
-                })
-              }
-            >
-              Register
-            </button>
-            <div onClick={() => this.setState({ showLogin: true })}>Log In</div>
-          </div>
-        )}
-      </div>
     );
   }
 }
