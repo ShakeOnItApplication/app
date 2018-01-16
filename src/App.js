@@ -3,6 +3,7 @@ import './App.css';
 import axios from 'axios';
 
 import Login from './components/Login/Login';
+import router from './router';
 
 class App extends Component {
   constructor(props) {
@@ -12,7 +13,18 @@ class App extends Component {
     };
   }
   render() {
-    return <div>{this.state.showLogIn ? <Login /> : <div>Hey</div>}</div>;
+    return (
+      <div>
+        { this.state.showLogIn
+          ?
+        <Login />
+        :
+        <div>
+          { router }
+        </div>
+        }
+      </div>
+    );
   }
 }
 
