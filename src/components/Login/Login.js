@@ -21,7 +21,7 @@ export default class Login extends Component {
 
     render() {
         return (
-            <div>
+            <div className="flex-center">
                 {this.state.showLogin
                     ?
                     <div>
