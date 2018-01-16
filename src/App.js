@@ -6,11 +6,11 @@ import Login from './components/Login/Login';
 import router from './router';
 
 class App extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       showLogIn: true
-    }
+    };
   }
   render() {
     return (
