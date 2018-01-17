@@ -1,0 +1,27 @@
+#registerUser {
+  transform: translateX(100vw);
+  position: absolute;
+  top: auto;
+  left: auto;
+}
+#login {
+  position: absolute;
+  top: auto;
+  left: auto;
+}
+
+.login-wrapper {
+  height: 100vh;
+  width: 100%;
+}
+
+.login-input {
+  padding: 10px;
+  font-size: 1.5em;
+  margin: 10px 0;
+}
+
+.input-title {
+  align-self: flex-start;
+  font-size: 1.2em;
+}

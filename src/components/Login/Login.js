@@ -1,53 +1,134 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { logIn } from '../../ducks/reducer';
+import './Login.css';
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       showLogin: true
     };
   }
+
   login(info) {
     axios.post('/auth/login', info).then(response => {
       console.log(response);
+      if (response.data.user_id) {
+        this.props.logIn(true);
+      }
     });
   }
+
   registerUser(info) {
-    axios.post('/api/registerUser', info).then(res => {
-      console.log(res);
+    axios.post('/api/registerUser', info).then(response => {
+      if (response.data.user_id) {
+        this.props.logIn(true);
+      }
     });
   }
-    render() {
-        return (
-            <div className="flex-center">
-                {this.state.showLogin
-                    ?
-                    <div>
-                        <div>Username</div>
-                        <input type="text" onChange={(e) => this.setState({ username: e.target.value })} />
-                        <div>Password</div>
-                        <input type="text" onChange={(e) => this.setState({ password: e.target.value })} />
-                        <button onClick={() => this.login({ username: this.state.username, password: this.state.password })}>Log In</button>
-                        <div onClick={()=> this.setState({ showLogin: false }) }>Create Account</div>
-                    </div>
-                    :
-                    <div>
-                        <div>Username</div>
-                        <input type="text" onChange={(e) => this.setState({ username: e.target.value })} />
-                        <div>Password</div>
-                        <input type="text" onChange={(e) => this.setState({ password: e.target.value })} />
-                        <div>Email</div>
-                        <input type="text" onChange={(e) => this.setState({ email: e.target.value })} />
-                        <div>First Name</div>
-                        <input type="text" onChange={(e) => this.setState({ first_name: e.target.value })} />
-                        <div>Last Name</div>
-                        <input type="text" onChange={(e) => this.setState({ last_name: e.target.value })} />
-                        <button onClick={() => this.registerUser({ username: this.state.username, password: this.state.password, email: this.state.email, first_name: this.state.first_name, last_name: this.state.last_name })}>Register</button>
-                        <div onClick={()=> this.setState({ showLogin: true }) }>Log In</div>
-                    </div>
-                }
-            </div>
+
+  hideLogin() {
+    document.getElementById('login').style.transform = 'translateX(-100vw)';
+    document.getElementById('registerUser').style.transform = 'translateX(0)';
+    this.setState({ showLogin: true });
+  }
+
+  hideRegisterUser() {
+    document.getElementById('login').style.transform = 'translateX(0)';
+    document.getElementById('registerUser').style.transform =
+      'translateX(100vw)';
+    this.setState({ showLogin: false });
+  }
+
+  render() {
+    return (
+      <div className="flex-center login-wrapper">
+        <div id="login" className="flex-center-column general-card white">
+          <div className="input-title">Username</div>
+          <input
+            className="login-input"
+            type="text"
+            onChange={e => this.setState({ username: e.target.value })}
+          />
+          <div className="input-title">Password</div>
+          <input
+            className="login-input"
+            type="password"
+            onChange={e => this.setState({ password: e.target.value })}
+          />
+          <button
+            className="button-main"
+            onClick={() =>
+              this.login({
+                username: this.state.username,
+                password: this.state.password
+              })
+            }
+          >
+            Log In
+          </button>
+          <div className="link" onClick={() => this.hideLogin()}>
+            Create Account
+          </div>
+        </div>
+        <div
+          id="registerUser"
+          className="flex-center-column general-card white"
+        >
+          <div className="input-title">Username</div>
+          <input
+            className="login-input"
+            type="text"
+            onChange={e => this.setState({ username: e.target.value })}
+          />
+          <div className="input-title">Password</div>
+          <input
+            className="login-input"
+            type="text"
+            onChange={e => this.setState({ password: e.target.value })}
+          />
+          <div className="input-title">Email</div>
+          <input
+            className="login-input"
+            type="text"
+            onChange={e => this.setState({ email: e.target.value })}
+          />
+          <div className="input-title">First Name</div>
+          <input
+            className="login-input"
+            type="text"
+            onChange={e => this.setState({ first_name: e.target.value })}
+          />
+          <div className="input-title">Last Name</div>
+          <input
+            className="login-input"
+            type="text"
+            onChange={e => this.setState({ last_name: e.target.value })}
+          />
+          <button
+            className="button-main"
+            onClick={() =>
+              this.registerUser({
+                username: this.state.username,
+                password: this.state.password,
+                email: this.state.email,
+                first_name: this.state.first_name,
+                last_name: this.state.last_name
+              })
+            }
+          >
+            Create Account
+          </button>
+          <div className="link" onClick={() => this.hideRegisterUser()}>
+            Log In
+          </div>
+        </div>
+      </div>
     );
   }
 }
+
+export default withRouter(connect(null, { logIn })(Login));

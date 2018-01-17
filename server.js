@@ -78,18 +78,17 @@ app.post('/api/registerUser', (req, res) => {
     bcrypt.hash(req.body.password, 10).then((hash) => {
       req.body.password = hash;
       db.registerUser(req.body)
-        .then(() => passport.authenticate('local'))
-        .then(function() {
-          res.send({ userid: req.session.passport.user.user.user_id });
+        .then((response) => {
+          res.send( response[0] );
         });
-    });
   });
-
-app.post('/auth/login', passport.authenticate('local', { failureFlash: true }), (req, res) => {
-    res.send({ userid: req.session.passport.user.user.user_id });
 });
 
-  // Auth Check Function
+app.post('/auth/login', passport.authenticate('local', { failureFlash: true }), (req, res) => {
+    res.send({ user_id: req.session.passport.user.user.user_id });
+});
+
+  // User Check Function
 const isLoggedIn = function (req, res, next) {
   if (!req.user) {
     console.log('not logged in');
@@ -98,15 +97,23 @@ const isLoggedIn = function (req, res, next) {
   return next();
 };
 
-app.get('/authcheck', isLoggedIn, (req, res) => {
-    res.json({ session: req.session });
+// Gets Current User Info
+app.get('/user/session', isLoggedIn, (req, res) => {
+    const db = req.app.get('db');
+    db.getUserInfo({ user_id: req.session.passport.user.user.user_id }).then(response => {
+      res.send(response[0]);
+    })
+});
+
+// Logout Function
+app.get('/auth/logout', (req, res) => {
+  req.logout();
+  res.json('ok');
 });
 
 app.get('/', (req, res)=>{
   const db = req.app.get('db');
-  db.getUsers().then((response)=>{
-    console.log(response)
-  });
+
 });
 
 const server = app.listen(port, function() {
