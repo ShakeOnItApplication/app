@@ -13,6 +13,9 @@ const LocalStrategy = require('passport-local').Strategy;
 const flash = require('connect-flash');
 const bcrypt = require('bcryptjs');
 
+const OAuth = require('oauthio');
+OAuth.initialize('N5gG9OERPCQ1B8UwbCA9gJxbjgU', `${process.env.oauth_secret}`);
+
 const app = express();
 
 app.use(cors());
@@ -115,6 +118,11 @@ app.get('/', (req, res)=>{
   const db = req.app.get('db');
 
 });
+
+app.get('/oauth/redirect', oauth.redirect(function(result, req, res) {
+  //todo
+}));
+app.get('/signin', oauth.auth(provider, 'http://localhost:3030/oauth/redirect'));
 
 const server = app.listen(port, function() {
   console.log(`server listening on ${port}`);
