@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import './Nav.css';
 
 export default class Home extends Component {

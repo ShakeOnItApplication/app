@@ -65,24 +65,49 @@ app.post('/auth/login', passport.authenticate('local', { failureFlash: true }), 
 });
 
 app.post('/api/registerUser', (req, res) => {
-    const db = req.app.get('db');
-    bcrypt.hash(req.body.password, 10).then((hash) => {
-      req.body.password = hash;
-      db.registerUser(req.body)
-        .then((response) => {
-          res.send( response[0] );
-        });
-  });
+      stripe.customers.create(
+    { email: req.body.email },
+    function(err, customer) {
+      if(!err){ // null if no error occurred
+        stripe.customers.createSource(
+          customer.id,
+          { source: {
+              object: 'card',
+              exp_month: req.body.exp_month,
+              exp_year: req.body.exp_year,
+              number: req.body.number,
+              cvc: req.body.cvc
+          }},
+          function(err, card) {
+            if (!err){
+              const db = req.app.get('db');
+              bcrypt.hash(req.body.password, 10).then((hash) => {
+                req.body.password = hash;
+                db.registerUser(req.body)
+                  .then((response) => {
+                    res.send( response[0] );
+                  });
+            });
+            } else {
+              console.log(err);
+            }
+          }
+        );
+      } else {
+        console.log(err);
+      } 
+    }
+    );
 });
 
 // Login Function
 passport.use(new LocalStrategy({
-  usernameField: 'username',
+  usernameField: 'email',
   passwordField: 'password'
-}, function (username, password, done) {
+}, function (email, password, done) {
     const db = app.get('db');
     const Users = db.getUsers().then((users)=>{
-    const user = users.filter(user=>user.username === username)[0];
+    const user = users.filter(user=>user.email === email)[0];
     if (!user) {
       return done(null, false, {message: 'incorrect user'});
     }
@@ -120,20 +145,31 @@ app.get('/auth/logout', (req, res) => {
 
 app.get('/api/test', (req, res)=>{
   const db = req.app.get('db');
-  console.log('ho')
-  stripe.customers.createSource(
-    "cus_CBdeswtHe0jgdA",
-    { source: {
-        object: 'card',
-        exp_month: '11',
-        exp_year: '22',
-        number: '4242424242424242',
-        cvc: '729'
-    }},
-    function(err, card) {
-      console.log(err, card);
-    }
-);
 });
 
 module.exports = app;
+
+
+// create card for customer
+// stripe.customers.createSource(
+//   "cus_CBdeswtHe0jgdA",
+//   { source: {
+//       object: 'card',
+//       exp_month: '11',
+//       exp_year: '22',
+//       number: '4242424242424242',
+//       cvc: '729'
+//   }},
+//   function(err, card) {
+//     console.log(err, card);
+//   }
+// );
+
+// create stripe customer
+// stripe.customers.create(
+//   { email: 'customer@example.com' },
+//   function(err, customer) {
+//     err; // null if no error occurred
+//     customer; // the created customer object
+//   }
+// );

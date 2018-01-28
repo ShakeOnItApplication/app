@@ -4,6 +4,12 @@
   top: auto;
   left: auto;
 }
+#registerCard {
+  transform: translateX(100vw);
+  position: absolute;
+  top: auto;
+  left: auto;
+}
 #login {
   position: absolute;
   top: auto;
