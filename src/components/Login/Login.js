@@ -13,6 +13,10 @@ class Login extends Component {
     };
   }
 
+  componentDidMount() {
+    axios.get('/api/test');
+  }
+
   login(info) {
     axios.post('/auth/login', info).then(response => {
       console.log(response);

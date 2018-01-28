@@ -11,9 +11,10 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
+const stripe = require('stripe')(process.env.stripe_id);
 
-const OAuth = require('oauthio');
-OAuth.initialize('N5gG9OERPCQ1B8UwbCA9gJxbjgU', `${process.env.oauth_secret}`);
+// const OAuth = require('oauthio');
+// OAuth.initialize('N5gG9OERPCQ1B8UwbCA9gJxbjgU', `${process.env.oauth_secret}`);
 
 const app = express();
 
@@ -117,8 +118,22 @@ app.get('/auth/logout', (req, res) => {
   res.json('ok');
 });
 
-app.get('/', (req, res)=>{
+app.get('/api/test', (req, res)=>{
   const db = req.app.get('db');
+  console.log('ho')
+  stripe.customers.createSource(
+    "cus_CBdeswtHe0jgdA",
+    { source: {
+        object: 'card',
+        exp_month: '11',
+        exp_year: '22',
+        number: '4242424242424242',
+        cvc: '729'
+    }},
+    function(err, card) {
+      console.log(err, card);
+    }
+);
 });
 
 module.exports = app;
