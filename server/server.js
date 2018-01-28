@@ -12,6 +12,9 @@ const bcrypt = require('bcryptjs');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 
+const OAuth = require('oauthio');
+OAuth.initialize('N5gG9OERPCQ1B8UwbCA9gJxbjgU', `${process.env.oauth_secret}`);
+
 const app = express();
 
 app.use(cors());
