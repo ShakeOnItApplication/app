@@ -1,29 +1,34 @@
+$whyte: #fff;
+$black: #000;
+$square: 60px;
+$hunnid: 100%;
+
 .nav-container {
   height: 50px;
-  width: 100%;
+  width: $hunnid;
   box-shadow: 5px 0px 15px #4a4ae6;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px;
-  background-color: #fff;
+  background-color: $whyte;
   position: absolute;
   top: 0;
 }
 
 .nav-logo-container {
-  height: 60px;
-  width: 60px;
+  height: $square;
+  width: $square;
   margin: 0 15px;
 }
 
 .nav-logo-container img {
-  height: 100%;
-  width: 100%;
+  height: $hunnid;
+  width: $hunnid;
 }
 
 .nav-link {
-  color: #000;
+  color: $black;
   font-size: 1.1em;
   border-bottom: 1px solid transparent;
   padding: 5px;
@@ -32,6 +37,6 @@
 }
 
 .nav-link:hover {
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid $black;
   cursor: pointer;
 }

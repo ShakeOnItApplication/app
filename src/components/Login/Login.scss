@@ -1,17 +1,17 @@
+$transformer: translateX(100vw);
+
 #registerUser {
-  transform: translateX(100vw);
+  transform: $transformer;
   position: absolute;
   top: auto;
   left: auto;
 }
-
 #registerCard {
-  transform: translateX(100vw);
+  transform: $transformer;
   position: absolute;
   top: auto;
   left: auto;
 }
-
 #login {
   position: absolute;
   top: auto;
