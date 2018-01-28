@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './Home.css';
+import Nav from '../Nav/Nav';
 
 export default class Home extends Component {
   constructor(props) {
@@ -20,7 +21,9 @@ export default class Home extends Component {
 
   render() {
     return (
-      <div className="flex-center">Welcome back, {this.state.first_name}</div>
+      <div className="flex-center">
+        <Nav />Welcome back, {this.state.first_name}
+      </div>
     );
   }
 }
