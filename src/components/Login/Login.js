@@ -14,7 +14,11 @@ class Login extends Component {
       email: '',
       password: '',
       registerInfo: {},
-      registerCardInfo: {}
+      registerCardInfo: {},
+      formErrors: { email: 'Invalid Email Format', password: 'Enter Password' },
+      emailValid: false,
+      passwordValid: false,
+      formValid: false
     };
   }
 
@@ -41,6 +45,7 @@ class Login extends Component {
           cvc: this.state.registerCardInfo.cvc
         })
         .then(response => {
+          console.log(response);
           if (response.data.user_id) {
             this.props.logIn(true);
           }
@@ -63,14 +68,14 @@ class Login extends Component {
   }
 
   render() {
-    console.log(this.state);
+    console.log(this.state.email);
     return (
       <div className="flex-center login-wrapper">
         <div id="login" className="flex-center-column general-card white">
           <div className="input-title">Email</div>
           <input
             className="login-input"
-            type="text"
+            type="email"
             onChange={e => this.setState({ email: e.target.value })}
           />
           <div className="input-title">Password</div>
