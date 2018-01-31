@@ -71,7 +71,10 @@ class Login extends Component {
     console.log(this.state.email);
     return (
       <div className="flex-center login-wrapper">
-        <div id="login" className="flex-center-column general-card white">
+        <div
+          id="login"
+          className="flex-center-column general-card white shadow"
+        >
           <div className="input-title">Email</div>
           <input
             className="login-input"
@@ -95,6 +98,7 @@ class Login extends Component {
           >
             Log In
           </button>
+          <div style={{ marginTop: '20px' }}>Don't have an account?</div>
           <div
             className="link"
             onClick={() =>

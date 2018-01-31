@@ -27,9 +27,11 @@
   padding: 10px;
   font-size: 1.5em;
   margin: 10px 0;
+  width: -webkit-fill-available;
 }
 
 .input-title {
   align-self: flex-start;
   font-size: 1.2em;
+  margin: 10px 0;
 }

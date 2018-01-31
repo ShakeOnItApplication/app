@@ -8,7 +8,10 @@ export default class RegisterCard extends Component {
 
   render() {
     return (
-      <div id="registerCard" className="flex-center-column general-card white">
+      <div
+        id="registerCard"
+        className="flex-center-column shadow general-card white"
+      >
         <div className="input-title">Card Number</div>
         <input
           className="login-input"
@@ -41,6 +44,15 @@ export default class RegisterCard extends Component {
         >
           Create Account
         </button>
+        <div style={{ marginTop: '20px' }}>Need to make a change?</div>
+        <div
+          className="link"
+          onClick={() =>
+            this.props.toggleLoginCard('registerCard', 'registerUser', 'right')
+          }
+        >
+          Back
+        </div>
       </div>
     );
   }

@@ -1,0 +1,32 @@
+.home-container {
+  padding-top: 90px;
+  width: 100%;
+}
+
+.profile-container {
+  width: 33%;
+  margin: 40px 20px;
+  align-self: flex-start;
+}
+
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.feed-container {
+  width: 45%;
+  margin: 40px 20px;
+  height: 750px;
+}
+
+.dropdown-option {
+  width: 100%;
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+.dropdown-option:hover {
+  background-color: #eeeeee;
+}
