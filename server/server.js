@@ -137,6 +137,13 @@ app.get('/user/session', isLoggedIn, (req, res) => {
     })
 });
 
+app.post('/api/getAllBets', (req, res) => {
+  const db = req.app.get('db');
+  db.getAllBets(req.body).then(response => {
+    res.send(response);
+  })
+})
+
 // Logout Function
 app.get('/auth/logout', (req, res) => {
   req.logout();
@@ -146,6 +153,20 @@ app.get('/auth/logout', (req, res) => {
 app.get('/api/test', (req, res)=>{
   const db = req.app.get('db');
 });
+
+app.post('/api/placeBet', (req, res) => {
+  const db = req.app.get('db');
+  console.log(req.body);
+  db.placeBet(req.body).then((response)=>{
+    console.log(response);
+    res.send(response);
+  })
+})
+
+app.post('/api/findUser', (req, res) => {
+  const db = req.app.get('db');
+  db.findUser(req.body).then(response => res.send(response));
+})
 
 module.exports = app;
 

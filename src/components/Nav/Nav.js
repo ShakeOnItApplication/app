@@ -8,7 +8,7 @@ export default class Home extends Component {
   }
   render() {
     return (
-      <div className="nav-container">
+      <div className="nav-container white shadow">
         <div className="nav-logo-container">
           <img
             src="https://d2gg9evh47fn9z.cloudfront.net/800px_COLOURBOX18068832.jpg"

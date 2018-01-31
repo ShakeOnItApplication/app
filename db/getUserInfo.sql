@@ -1,1 +1,1 @@
-SELECT first_name, last_name FROM users WHERE user_id = ${user_id};
+SELECT first_name, last_name, user_id FROM users WHERE user_id = ${user_id};
