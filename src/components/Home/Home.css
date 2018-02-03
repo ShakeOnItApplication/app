@@ -23,10 +23,15 @@
 
 .dropdown-option {
   width: 100%;
-  padding: 10px 0;
+  padding: 10px 0px;
   cursor: pointer;
+  background-color: #eeeeee;
 }
 
 .dropdown-option:hover {
-  background-color: #eeeeee;
+  background-color: #d0d0d0;
+}
+
+#user-list {
+  width: 100%;
 }
