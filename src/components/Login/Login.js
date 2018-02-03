@@ -6,13 +6,12 @@ import { logIn } from '../../ducks/reducer';
 import './Login.css';
 import RegisterUser from './RegisterUser/RegisterUser';
 import RegisterCard from './RegisterUser/RegisterCard';
+import LoginCard from './LoginCard';
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
       registerInfo: {},
       registerCardInfo: {},
       formErrors: { email: 'Invalid Email Format', password: 'Enter Password' },
@@ -71,43 +70,10 @@ class Login extends Component {
     console.log(this.state.email);
     return (
       <div className="flex-center login-wrapper">
-        <div
-          id="login"
-          className="flex-center-column general-card white shadow"
-        >
-          <div className="input-title">Email</div>
-          <input
-            className="login-input"
-            type="email"
-            onChange={e => this.setState({ email: e.target.value })}
-          />
-          <div className="input-title">Password</div>
-          <input
-            className="login-input"
-            type="password"
-            onChange={e => this.setState({ password: e.target.value })}
-          />
-          <button
-            className="button-main"
-            onClick={() =>
-              this.login({
-                email: this.state.email,
-                password: this.state.password
-              })
-            }
-          >
-            Log In
-          </button>
-          <div style={{ marginTop: '20px' }}>Don't have an account?</div>
-          <div
-            className="link"
-            onClick={() =>
-              this.toggleLoginCard('login', 'registerUser', 'left')
-            }
-          >
-            Create Account
-          </div>
-        </div>
+        <LoginCard
+          toggleLoginCard={this.toggleLoginCard}
+          login={this.login.bind(this)}
+        />
         <RegisterUser
           toggleLoginCard={this.toggleLoginCard}
           registerInfo={this.registerInfo.bind(this)}

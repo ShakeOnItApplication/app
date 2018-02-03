@@ -41,29 +41,34 @@ const stripeCtrl = {
     },
     placeBet: (req, res) => {
         const db = req.app.get('db');
+        const amountInCents = req.body.amount * 100;
+
         db.getStripeId({ id: req.body.admin_user_id }).then(response=>{
           stripe.customers.retrieve(
             response[0].stripe_id,
             function(err, customer) {
               // asynchronously called
-             // console.log(customer)
+              if(err){
+                return res.send({ err: 'Error' })
+              }
               stripe.charges.create({
-                amount: req.body.amount * 100,
+                amount: amountInCents,
                 currency: "usd",
                 customer: customer.id,
-                source: customer.default_source, // obtained with Stripe.js
+                source: customer.default_source,
                 description: req.body.bet_title
               }, function(err, charge) {
-                console.log({err: err, charge: charge});
+                if (!err){
+                  db.placeBet(req.body).then((response)=>{
+                    res.send(response);
+                  });
+                } else {
+                  res.send({err: 'An Error Occured'})
+                }
               });
             }
           );
         
-          // console.log(req.body);
-          // db.placeBet(req.body).then((response)=>{
-          //   console.log(response);
-          //   res.send(response);
-          // });
         })
       
       }

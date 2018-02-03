@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import GeneralCard from '../../GeneralCard/GeneralCard';
 
 export default class RegisterCard extends Component {
   constructor(props) {
@@ -13,10 +14,7 @@ export default class RegisterCard extends Component {
 
   render() {
     return (
-      <div
-        id="registerUser"
-        className="flex-center-column shadow general-card white"
-      >
+      <GeneralCard id={'registerUser'}>
         <div className="input-title">Email</div>
         <input
           className="login-input"
@@ -59,7 +57,7 @@ export default class RegisterCard extends Component {
         >
           Log In
         </div>
-      </div>
+      </GeneralCard>
     );
   }
 }
