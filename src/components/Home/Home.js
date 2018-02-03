@@ -8,6 +8,7 @@ export default class Home extends Component {
     super(props);
     this.state = {
       first_name: '',
+      last_name: '',
       pending_users: []
     };
   }
@@ -52,7 +53,7 @@ export default class Home extends Component {
 
   proposeBet() {
     axios
-      .post('/api/placeBet', {
+      .post('/api/stripe/placeBet', {
         admin_user_id: this.state.admin_user_id,
         receiver_user_id: this.state.pending_user,
         amount: this.state.amount,
@@ -86,7 +87,7 @@ export default class Home extends Component {
             </div>
             <div>Account Balance: $35</div>
           </div>
-          <div className="general-card white shadow">
+          <div className="general-card flex-center-column white shadow">
             <div className="title">Make Bet</div>
             <div className="input-title">Against Who?</div>
             <input

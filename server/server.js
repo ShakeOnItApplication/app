@@ -11,11 +11,6 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
-const stripe = require('stripe')(process.env.stripe_id);
-
-// const OAuth = require('oauthio');
-// OAuth.initialize('N5gG9OERPCQ1B8UwbCA9gJxbjgU', `${process.env.oauth_secret}`);
-
 const app = express();
 
 app.use(cors());
@@ -23,7 +18,6 @@ app.use(cookieParser());
 // this is the build command for when we host the app, npm start builds it for us, so we finna leave it commented out til we done
 // app.use(express.static(`${__dirname}/build`));
 app.use(flash());
-
 
 const connectionString = process.env.DATABASE_URL;
 const massiveConnection = massive(connectionString)
@@ -60,59 +54,54 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.post('/auth/login', passport.authenticate('local', { failureFlash: true }), (req, res) => {
-    res.send({ user_id: req.session.passport.user.user.user_id });
+const stripeCtrl = require('./stripe/stripeCtrl');
+
+app.post('/api/registerUser', stripeCtrl.registerUser);
+
+app.post('/api/stripe/placeBet', stripeCtrl.placeBet);
+
+
+app.post('/api/getAllBets', (req, res) => {
+  const db = req.app.get('db');
+  db.getAllBets(req.body).then(response => {
+    res.send(response);
+  })
+})
+
+// Logout Function
+app.get('/auth/logout', (req, res) => {
+  req.logout();
+  res.json('ok');
 });
 
-app.post('/api/registerUser', (req, res) => {
-      stripe.customers.create(
-    { email: req.body.email },
-    function(err, customer) {
-      if(!err){ // null if no error occurred
-        stripe.customers.createSource(
-          customer.id,
-          { source: {
-              object: 'card',
-              exp_month: req.body.exp_month,
-              exp_year: req.body.exp_year,
-              number: req.body.number,
-              cvc: req.body.cvc
-          }},
-          function(err, card) {
-            if (!err){
-              const db = req.app.get('db');
-              bcrypt.hash(req.body.password, 10).then((hash) => {
-                req.body.password = hash;
-                db.registerUser(req.body)
-                  .then((response) => {
-                    res.send( response[0] );
-                  });
-            });
-            } else {
-              console.log(err);
-            }
-          }
-        );
-      } else {
-        console.log(err);
-      } 
-    }
-    );
+app.get('/api/test', (req, res)=>{
+  const db = req.app.get('db');
 });
+
+
+app.post('/api/findUser', (req, res) => {
+  const db = req.app.get('db');
+  db.findUser(req.body).then(response => res.send(response));
+})
 
 // Login Function
+
+app.post('/auth/login', passport.authenticate('local', { failureFlash: true }), (req, res) => {
+  res.send({ user_id: req.session.passport.user.user.user_id });
+});
+
 passport.use(new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password'
 }, function (email, password, done) {
-    const db = app.get('db');
-    const Users = db.getUsers().then((users)=>{
+  const db = app.get('db');
+  const Users = db.getUsers().then((users)=>{
     const user = users.filter(user=>user.email === email)[0];
     if (!user) {
       return done(null, false, {message: 'incorrect user'});
     }
     const authenticated = bcrypt.compareSync(password, user.password);
-
+    
     if (!authenticated) {
       return done(null, false, {message: 'incorrect password'});
     }
@@ -136,37 +125,6 @@ app.get('/user/session', isLoggedIn, (req, res) => {
       res.send(response[0]);
     })
 });
-
-app.post('/api/getAllBets', (req, res) => {
-  const db = req.app.get('db');
-  db.getAllBets(req.body).then(response => {
-    res.send(response);
-  })
-})
-
-// Logout Function
-app.get('/auth/logout', (req, res) => {
-  req.logout();
-  res.json('ok');
-});
-
-app.get('/api/test', (req, res)=>{
-  const db = req.app.get('db');
-});
-
-app.post('/api/placeBet', (req, res) => {
-  const db = req.app.get('db');
-  console.log(req.body);
-  db.placeBet(req.body).then((response)=>{
-    console.log(response);
-    res.send(response);
-  })
-})
-
-app.post('/api/findUser', (req, res) => {
-  const db = req.app.get('db');
-  db.findUser(req.body).then(response => res.send(response));
-})
 
 module.exports = app;
 

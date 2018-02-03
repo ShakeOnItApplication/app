@@ -1,11 +1,12 @@
 .nav-container {
   height: 50px;
   width: 100%;
-  /* box-shadow: 5px 0px 15px #4949E6; */
+  box-shadow: 5px 0px 15px grey;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px;
+  background-color: #fff;
   position: absolute;
   top: 0;
 }
