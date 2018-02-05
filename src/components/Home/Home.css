@@ -4,7 +4,7 @@
 }
 
 .profile-container {
-  width: 33%;
+  width: 350px;
   margin: 40px 20px;
   align-self: flex-start;
 }
@@ -16,9 +16,8 @@
 }
 
 .feed-container {
-  width: 45%;
+  width: 550px;
   margin: 40px 20px;
-  height: 750px;
 }
 
 .dropdown-option {

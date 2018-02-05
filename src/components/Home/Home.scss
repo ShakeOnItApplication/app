@@ -1,0 +1,40 @@
+.home-container {
+    padding-top: 90px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .profile-container {
+      width: 350px;
+    margin: 40px 20px;
+    align-self: flex-start;
+  }
+  
+  .profile-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+  
+  .feed-container {
+    width: 550px;
+    margin: 40px 20px;
+  }
+  
+  .dropdown-option {
+    width: 100%;
+    padding: 10px 0px;
+    cursor: pointer;
+    background-color: #eeeeee;
+  }
+  
+  .dropdown-option:hover {
+    background-color: #d0d0d0;
+  }
+  
+  #user-list {
+    width: 100%;
+  }
+  

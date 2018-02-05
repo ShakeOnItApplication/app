@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './Home.css';
+import './MakeBet/MakeBet.css';
 import Nav from '../Nav/Nav';
 import MakeBet from './MakeBet/MakeBet';
+import ProfileCard from './ProfileCard/ProfileCard';
+import PendingBets from '../PendingBets/PendingBets';
 
 export default class Home extends Component {
   constructor(props) {
@@ -17,17 +20,15 @@ export default class Home extends Component {
   componentDidMount() {
     axios.get('/user/session').then(response => {
       console.log(response);
+      const name =
+        response.data.first_name[0].toUpperCase() +
+        response.data.first_name.substring(1, response.data.first_name.length) +
+        ' ' +
+        response.data.last_name[0].toUpperCase() +
+        response.data.last_name.substring(1, response.data.last_name.length);
       this.setState({
         admin_user_id: response.data.user_id,
-        first_name:
-          response.data.first_name[0].toUpperCase() +
-          response.data.first_name.substring(
-            1,
-            response.data.first_name.length
-          ),
-        last_name:
-          response.data.last_name[0].toUpperCase() +
-          response.data.last_name.substring(1, response.data.last_name.length)
+        name: name
       });
     });
   }
@@ -42,13 +43,8 @@ export default class Home extends Component {
     return (
       <div className="flex-center home-container">
         <Nav />
+        <ProfileCard name={this.state.name} />
         <div className="profile-container">
-          <div className="general-card profile-card">
-            <div className="title">
-              {this.state.first_name}&nbsp;{this.state.last_name}
-            </div>
-            <div>Account Balance: $35</div>
-          </div>
           {this.state.showMakeBet ? (
             <MakeBet
               hideMakeBet={this.hideMakeBet.bind(this)}
@@ -63,7 +59,9 @@ export default class Home extends Component {
             </button>
           )}
         </div>
-        <div className="feed-container general-card white shadow" />
+        <div className="feed-container general-card white shadow">
+          <PendingBets id={this.state.admin_user_id} />
+        </div>
       </div>
     );
   }
