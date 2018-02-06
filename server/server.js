@@ -55,10 +55,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 const stripeCtrl = require('./stripe/stripeCtrl');
+const betCtrl = require('./bets/betCtrl');
 
 app.post('/api/registerUser', stripeCtrl.registerUser);
 
 app.post('/api/stripe/placeBet', stripeCtrl.placeBet);
+
+app.post('/api/getPendingBets', betCtrl.getPendingBets);
 
 
 app.post('/api/getAllBets', (req, res) => {

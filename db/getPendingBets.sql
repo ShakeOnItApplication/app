@@ -1,0 +1,1 @@
+SELECT * FROM bets WHERE receiver_user_id = ${user_id} AND status = 'pending';
