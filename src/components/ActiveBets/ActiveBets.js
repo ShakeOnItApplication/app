@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import './PendingBets.css';
 import Bet from '../Bet/Bet';
 import GeneralCard from '../GeneralCard/GeneralCard';
 
-export default class PendingBets extends Component {
+export default class ActiveBets extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      pendingBets: []
+      activeBets: []
     };
   }
 
@@ -26,28 +25,28 @@ export default class PendingBets extends Component {
   }
 
   getBets(id) {
-    axios.post('/api/getPendingBets', { user_id: id }).then(response => {
+    axios.post('/api/getActiveBets', { user_id: id }).then(response => {
       console.log(response);
       this.setState({
-        pendingBets: response.data
+        activeBets: response.data
       });
     });
   }
 
   render() {
-    const pendingBets = this.state.pendingBets.map((bet, idx) => {
+    const activeBets = this.state.activeBets.map((bet, idx) => {
       return (
-        <GeneralCard key={bet.bet_id} id={'pending' + bet.bet_id}>
-          <Bet key={bet.bet_id} bet={bet} status={'pending'} />
+        <GeneralCard key={bet.bet_id} id={'active' + bet.bet_id}>
+          <Bet key={bet.bet_id} bet={bet} status={'active'} />
         </GeneralCard>
       );
     });
     return (
       <div className="flex-center-column">
-        {this.state.pendingBets.length > 0 && (
+        {this.state.activeBets.length > 0 && (
           <div className="pending-wrapper">
-            <div className="section-title align-start">Pending Bets</div>
-            {pendingBets}
+            <div className="section-title align-start">Active Bets</div>
+            {activeBets}
           </div>
         )}
       </div>

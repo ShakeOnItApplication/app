@@ -5,7 +5,7 @@ body {
   /*  'Franklin Gothic Medium', 'Arial Narrow',  */
   font-size: 16px;
   background-color: #f6f6f6;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 input:focus {
@@ -49,7 +49,6 @@ input:focus {
 
 .flex-between {
   display: flex;
-  align-items: center;
   justify-content: space-between;
 }
 
@@ -68,6 +67,7 @@ input:focus {
   background-color: #4a4ae6;
   font-size: 1.2em;
   margin: 10px;
+  cursor: pointer;
 }
 
 /* links */
@@ -82,4 +82,14 @@ input:focus {
 .title {
   font-size: 1.5em;
   margin: 10px 0;
+}
+
+.section-title {
+  font-size: 2em;
+  margin: 20px 0;
+  color: #a2a2a2;
+}
+
+.align-start {
+  align-self: flex-start;
 }

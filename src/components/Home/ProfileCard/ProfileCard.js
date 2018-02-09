@@ -9,10 +9,10 @@ export default class ProfileCard extends Component {
 
   render() {
     return (
-      <GeneralCard id={'profile'}>
+      <div>
         <div className="title">{this.props.name}</div>
         <div>Account Balance: $35</div>
-      </GeneralCard>
+      </div>
     );
   }
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import GeneralCard from '../../GeneralCard/GeneralCard';
+import './MakeBet.css';
 
 export default class MakeBet extends Component {
   constructor(props) {
@@ -9,14 +10,16 @@ export default class MakeBet extends Component {
     this.state = {
       pending_users: [],
       pending_user: null,
-      admin_user_id: this.props.admin_user_id
+      admin_user_id: this.props.admin_user_id,
+      admin_info: this.props.admin_info
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps !== this.props) {
       this.setState({
-        admin_user_id: nextProps.admin_user_id
+        admin_user_id: nextProps.admin_user_id,
+        admin_info: nextProps.admin_info
       });
     }
   }
@@ -35,7 +38,14 @@ export default class MakeBet extends Component {
   }
 
   setPendingUser(user) {
-    this.setState({ pending_user: user.user_id });
+    const opponent_info = {
+      first_name: user.first_name,
+      last_name: user.last_name
+    };
+    this.setState({
+      opponent_user_id: user.user_id,
+      opponent_info: JSON.stringify(opponent_info)
+    });
     document.getElementById('pending-user').value =
       user.first_name + ' ' + user.last_name;
     document.getElementById('user-list').style.display = 'none';
@@ -45,7 +55,9 @@ export default class MakeBet extends Component {
     axios
       .post('/api/stripe/placeBet', {
         admin_user_id: this.state.admin_user_id,
-        receiver_user_id: this.state.pending_user,
+        opponent_user_id: this.state.opponent_user_id,
+        admin_info: JSON.stringify(this.state.admin_info),
+        opponent_info: this.state.opponent_info,
         amount: this.state.amount,
         bet_title: this.state.title
       })
@@ -71,35 +83,40 @@ export default class MakeBet extends Component {
       );
     });
     return (
-      <GeneralCard id={'bet'}>
-        <div className="title">Make Bet</div>
-        <div className="input-title">Against Who?</div>
-        <input
-          id="pending-user"
-          className="login-input"
-          type="text"
-          onChange={e => this.setState({ pending_user: e.target.value })}
-        />
-        <div id="user-list">{pending_users}</div>
-        <button className="button-main" onClick={() => this.findUser()}>
-          Find User
-        </button>
-        <div className="input-title">On What?</div>
-        <input
-          className="login-input"
-          type="text"
-          onChange={e => this.setState({ title: e.target.value })}
-        />
-        <div className="input-title">How much are you proposing?</div>
-        <input
-          className="login-input"
-          type="text"
-          onChange={e => this.setState({ amount: e.target.value })}
-        />
-        <button className="button-main" onClick={() => this.proposeBet()}>
-          Propose Bet
-        </button>
-      </GeneralCard>
+      <div className="modal-wrapper" id="make-bet">
+        <div className="modal">
+          <div className="title">Make Bet</div>
+          <div className="input-title">Against Who?</div>
+          <input
+            id="pending-user"
+            className="login-input"
+            type="text"
+            onChange={e => this.setState({ pending_user: e.target.value })}
+          />
+          <div id="user-list">{pending_users}</div>
+          <button className="button-main" onClick={() => this.findUser()}>
+            Find User
+          </button>
+          <div className="input-title">On What?</div>
+          <input
+            className="login-input"
+            type="text"
+            onChange={e => this.setState({ title: e.target.value })}
+          />
+          <div className="input-title">How much are you proposing?</div>
+          <input
+            className="login-input"
+            type="text"
+            onChange={e => this.setState({ amount: e.target.value })}
+          />
+          <button className="button-main" onClick={() => this.proposeBet()}>
+            Propose Bet
+          </button>
+          <div className="nav-link" onClick={this.props.hideMakeBet}>
+            Close
+          </div>
+        </div>
+      </div>
     );
   }
 }

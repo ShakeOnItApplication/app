@@ -1,1 +1,1 @@
-SELECT * FROM bets WHERE receiver_user_id = ${user_id} AND status = 'pending';
+SELECT * FROM bets WHERE opponent_user_id = ${user_id} AND status = 'pending';
