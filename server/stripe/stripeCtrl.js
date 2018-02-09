@@ -80,6 +80,45 @@ const stripeCtrl = {
         
         })
       
+      },
+      handleBet: (req, res) => {
+        console.log(req.body);
+        const db = req.app.get('db');
+        if (req.body.decision === 'accept'){
+        
+        req.body.status = 'active';
+        const amountInCents = req.body.amount * 100;
+
+        db.getStripeId({ id: req.body.opponent_user_id }).then(response=>{
+          stripe.customers.retrieve(
+            response[0].stripe_id,
+            function(err, customer) {
+              // asynchronously called
+              if(err){
+                return res.send({ err: 'Error' })
+              }
+              stripe.charges.create({
+                amount: amountInCents,
+                currency: "usd",
+                customer: customer.id,
+                source: customer.default_source,
+                description: req.body.bet_title
+              }, function(err, charge) {
+                if (!err){
+                  db.setBetStatus(req.body).then((response)=>{
+                    res.send(response);
+                  });
+                } else {
+                  res.send({err: 'An Error Occured'})
+                }
+              });
+            }
+          );
+        
+        })
+      } else {
+        return;
+      }
       }
 }
 
