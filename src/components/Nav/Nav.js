@@ -28,20 +28,19 @@ export default class Home extends Component {
           />
         </div>
         <ProfileCard name={state.name} />
-        {this.state.showMakeBet ? (
+        {this.state.showMakeBet && (
           <MakeBet
             hideMakeBet={this.hideMakeBet.bind(this)}
             admin_user_id={state.admin_user_id}
             admin_info={state.admin_info}
           />
-        ) : (
-          <button
-            className="button-main"
-            onClick={() => this.setState({ showMakeBet: true })}
-          >
-            Make Bet
-          </button>
         )}
+        <button
+          className="button-main"
+          onClick={() => this.setState({ showMakeBet: true })}
+        >
+          Make Bet
+        </button>
       </div>
     );
   }
