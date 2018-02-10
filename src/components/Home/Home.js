@@ -35,7 +35,7 @@ export default class Home extends Component {
 
   render() {
     return (
-      <div className="outside-container flex-center-column">
+      <div className="home-container">
         <Nav state={this.state} />
         <div className="right-side flex-column">
           <div className="">
