@@ -59,23 +59,13 @@ app.use(cookieParser());
 const stripeCtrl = require("./stripe/stripeCtrl");
 const betCtrl = require("./bets/betCtrl");
 
-app.post("/api/registerUser", (req, res) => {
-  stripeCtrl.registerUser;
-});
+app.post("/api/registerUser", stripeCtrl.registerUser);
 
-app.post("/api/stripe/placeBet", (req, res) => {
-  stripeCtrl.placeBet;
-});
-app.post("/api/stripe/handleBet", (req, res) => {
-  stripeCtrl.handleBet;
-});
+app.post("/api/stripe/placeBet", stripeCtrl.placeBet);
+app.post("/api/stripe/handleBet", stripeCtrl.handleBet);
 
-app.post("/api/getPendingBets", (req, res) => {
-  betCtrl.getPendingBets;
-});
-app.post("/api/getActiveBets", (req, res) => {
-  betCtrl.getActiveBets;
-});
+app.post("/api/getPendingBets", betCtrl.getPendingBets);
+app.post("/api/getActiveBets", betCtrl.getActiveBets);
 
 app.post("/api/getAllBets", (req, res) => {
   const db = req.app.get("db");
