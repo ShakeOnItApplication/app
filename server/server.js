@@ -1,16 +1,16 @@
 require("dotenv").config();
 
-const express = require('express');
-const session = require('express-session');
-const massive = require('massive');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const { json } = require('body-parser');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcryptjs');
-const cookieParser = require('cookie-parser');
-const flash = require('connect-flash');
+const express = require("express");
+const session = require("express-session");
+const massive = require("massive");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const { json } = require("body-parser");
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const bcrypt = require("bcryptjs");
+const cookieParser = require("cookie-parser");
+const flash = require("connect-flash");
 const app = express();
 
 app.use(cors());
@@ -21,18 +21,20 @@ app.use(flash());
 
 const connectionString = process.env.DATABASE_URL;
 const massiveConnection = massive(connectionString)
-.then(db => {
-  app.set('db', db);
-})
-.catch(err => {
-  console.log(err);
-});
+  .then(db => {
+    app.set("db", db);
+  })
+  .catch(err => {
+    console.log(err);
+  });
 
-app.use(session({
-  secret: process.env.secret,
-  resave: true,
-  saveUninitialized: true
-}));
+app.use(
+  session({
+    secret: process.env.secret,
+    resave: true,
+    saveUninitialized: true
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -54,85 +56,103 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-const stripeCtrl = require('./stripe/stripeCtrl');
-const betCtrl = require('./bets/betCtrl');
+const stripeCtrl = require("./stripe/stripeCtrl");
+const betCtrl = require("./bets/betCtrl");
 
-app.post('/api/registerUser', stripeCtrl.registerUser);
+app.post("/api/registerUser", (req, res) => {
+  stripeCtrl.registerUser;
+});
 
-app.post('/api/stripe/placeBet', stripeCtrl.placeBet);
-app.post('/api/stripe/handleBet', stripeCtrl.handleBet);
+app.post("/api/stripe/placeBet", (req, res) => {
+  stripeCtrl.placeBet;
+});
+app.post("/api/stripe/handleBet", (req, res) => {
+  stripeCtrl.handleBet;
+});
 
-app.post('/api/getPendingBets', betCtrl.getPendingBets);
-app.post('/api/getActiveBets', betCtrl.getActiveBets);
+app.post("/api/getPendingBets", (req, res) => {
+  betCtrl.getPendingBets;
+});
+app.post("/api/getActiveBets", (req, res) => {
+  betCtrl.getActiveBets;
+});
 
-
-app.post('/api/getAllBets', (req, res) => {
-  const db = req.app.get('db');
+app.post("/api/getAllBets", (req, res) => {
+  const db = req.app.get("db");
   db.getAllBets(req.body).then(response => {
     res.send(response);
-  })
-})
+  });
+});
 
 // Logout Function
-app.get('/auth/logout', (req, res) => {
+app.get("/auth/logout", (req, res) => {
   req.logout();
-  res.json('ok');
+  res.json("ok");
 });
 
-app.get('/api/test', (req, res)=>{
-  const db = req.app.get('db');
+app.get("/api/test", (req, res) => {
+  const db = req.app.get("db");
 });
 
-
-app.post('/api/findUser', (req, res) => {
-  const db = req.app.get('db');
+app.post("/api/findUser", (req, res) => {
+  const db = req.app.get("db");
   db.findUser(req.body).then(response => res.send(response));
-})
+});
 
 // Login Function
 
-app.post('/auth/login', passport.authenticate('local', { failureFlash: true }), (req, res) => {
-  res.send({ user_id: req.session.passport.user.user.user_id });
-});
+app.post(
+  "/auth/login",
+  passport.authenticate("local", { failureFlash: true }),
+  (req, res) => {
+    res.send({ user_id: req.session.passport.user.user.user_id });
+  }
+);
 
-passport.use(new LocalStrategy({
-  usernameField: 'email',
-  passwordField: 'password'
-}, function (email, password, done) {
-  const db = app.get('db');
-  const Users = db.getUsers().then((users)=>{
-    const user = users.filter(user=>user.email === email)[0];
-    if (!user) {
-      return done(null, false, {message: 'incorrect user'});
+passport.use(
+  new LocalStrategy(
+    {
+      usernameField: "email",
+      passwordField: "password"
+    },
+    function(email, password, done) {
+      const db = app.get("db");
+      const Users = db.getUsers().then(users => {
+        const user = users.filter(user => user.email === email)[0];
+        if (!user) {
+          return done(null, false, { message: "incorrect user" });
+        }
+        const authenticated = bcrypt.compareSync(password, user.password);
+
+        if (!authenticated) {
+          return done(null, false, { message: "incorrect password" });
+        }
+        return done(null, user);
+      });
     }
-    const authenticated = bcrypt.compareSync(password, user.password);
-    
-    if (!authenticated) {
-      return done(null, false, {message: 'incorrect password'});
-    }
-    return done(null, user);
-  });
-}));
+  )
+);
 
 // User Check Function
-const isLoggedIn = function (req, res, next) {
+const isLoggedIn = function(req, res, next) {
   if (!req.user) {
-    console.log('not logged in');
-    return res.json('not logged in');
+    console.log("not logged in");
+    return res.json("not logged in");
   }
   return next();
 };
 
 // Gets Current User Info
-app.get('/user/session', isLoggedIn, (req, res) => {
-    const db = req.app.get('db');
-    db.getUserInfo({ user_id: req.session.passport.user.user.user_id }).then(response => {
+app.get("/user/session", isLoggedIn, (req, res) => {
+  const db = req.app.get("db");
+  db
+    .getUserInfo({ user_id: req.session.passport.user.user.user_id })
+    .then(response => {
       res.send(response[0]);
-    })
+    });
 });
 
 module.exports = app;
-
 
 // create card for customer
 // stripe.customers.createSource(
