@@ -14,12 +14,14 @@ export default class ActiveBets extends Component {
 
   componentDidMount() {
     if (this.props.id) {
+      this.setState({ user_id: this.props.id });
       this.getBets(this.props.id);
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props !== nextProps) {
+      this.setState({ user_id: nextProps.id });
       this.getBets(nextProps.id);
     }
   }
@@ -34,10 +36,16 @@ export default class ActiveBets extends Component {
   }
 
   render() {
+    console.log(this.state.user_id);
     const activeBets = this.state.activeBets.map((bet, idx) => {
       return (
         <GeneralCard key={bet.bet_id} id={'active' + bet.bet_id}>
-          <Bet key={bet.bet_id} bet={bet} status={'active'} />
+          <Bet
+            key={bet.bet_id}
+            bet={bet}
+            userId={this.state.user_id}
+            status={'active'}
+          />
         </GeneralCard>
       );
     });
