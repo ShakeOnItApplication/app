@@ -1,0 +1,1 @@
+SELECT stripe_account_id FROM users WHERE user_id = ${id};

@@ -29,12 +29,13 @@ input:focus {
 .general-card {
   transition: transform 500ms;
   padding: 20px;
+  margin: 20px auto;
 }
 
 .shadow {
-  box-shadow: 0px 0px 5px $darkgrey;
-  -webkit-box-shadow: 0px 0px 5px $darkgrey;
-  -moz-box-shadow: 0px 0px 5px $darkgrey;  
+  box-shadow: 0px 0px 10px $darkgrey;
+  -webkit-box-shadow: 0px 0px 10px $darkgrey;
+  -moz-box-shadow: 0px 0px 10px $darkgrey;  
 }
 
 .deep-shadow-card {
@@ -78,6 +79,7 @@ input:focus {
   background-color: $mainblue;
   font-size: 1.2em;
   margin: 10px;
+  cursor: pointer;
 }
 
 /* links */

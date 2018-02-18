@@ -63,6 +63,7 @@ app.post("/api/registerUser", stripeCtrl.registerUser);
 
 app.post("/api/stripe/placeBet", stripeCtrl.placeBet);
 app.post("/api/stripe/handleBet", stripeCtrl.handleBet);
+app.post("/api/stripe/settleBet", stripeCtrl.settleBet);
 
 app.post("/api/getPendingBets", betCtrl.getPendingBets);
 app.post("/api/getActiveBets", betCtrl.getActiveBets);

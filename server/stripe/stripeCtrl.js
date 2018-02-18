@@ -12,6 +12,8 @@ const stripeCtrl = {
         email: req.body.email
       }, function(err, account) {
         if(!err){
+        const stripe_account_id = account.id;
+        req.body.stripe_account_id = stripe_account_id;
         stripe.customers.create(
           { email: req.body.email },
           function(err, customer) {
@@ -119,6 +121,26 @@ const stripeCtrl = {
       } else {
         return;
       }
+      },
+      settleBet: (req, res) => {
+        const db = req.app.get('db');
+        db.getStripeAccount({ id: req.body.id }).then(response => {
+          const accountId = response[0].stripe_account_id;
+          const amountInCents = req.body.amount * 100;
+          stripe.transfers .create({
+            amount: amountInCents,
+            currency: "usd",
+            destination: accountId
+          }, function(err, payout) {
+            // asynchronously called
+            console.log(err, payout);
+            if (!err){
+              db.settleBet(req.body).then(response => {
+                res.send(response);
+              })
+            }
+          });
+        })        
       }
 }
 
