@@ -8,10 +8,7 @@ import Bets from '../Bets/Bets';
 export default class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      first_name: '',
-      last_name: ''
-    };
+    this.state = {};
   }
 
   componentDidMount() {

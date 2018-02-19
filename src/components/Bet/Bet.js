@@ -41,37 +41,63 @@ export default class Bet extends Component {
 
   render() {
     const bet = this.props.bet;
-    const name = JSON.parse(bet.admin_info);
+    const admin_name = `${JSON.parse(bet.admin_info).first_name} ${
+      JSON.parse(bet.admin_info).last_name
+    }`;
+    const opponent_name = `${JSON.parse(bet.opponent_info).first_name} ${
+      JSON.parse(bet.opponent_info).last_name
+    }`;
+    console.log(bet.admin_user_id, this.props.userId);
     return (
       <div className="bet-container">
-        <div className="flex-between">
+        <div className="flex-between bet-width">
           <div>
-            {' '}
-            {name.first_name}&nbsp;{name.last_name}
+            <div className="bet-text">
+              {' '}
+              {bet.admin_user_id === this.props.userId ? (
+                <div>
+                  <div className="bet-headers">Awaiting:</div>
+                  <div className="name">{opponent_name}</div>
+                </div>
+              ) : (
+                <div>
+                  <div className="bet-headers">Against:</div>
+                  <div className="name">{admin_name}</div>
+                </div>
+              )}
+            </div>
           </div>
-          <div> {bet.title} </div>
-          <div> ${bet.amount} </div>
+          <div className="bet-text">
+            <div className="bet-headers">Bet:</div>
+            <div className="name"> {bet.bet_title} </div>
+          </div>
+          <div className="amount"> ${bet.amount} </div>
         </div>
-        {this.props.status === 'pending' && (
-          <div className="flex-center">
-            <div
-              className="button-main"
-              onClick={() => this.handleBet('accept')}
-            >
-              Accept
+        {this.props.status === 'pending' &&
+          this.props.userId !== bet.admin_user_id && (
+            <div className="flex-around handle-buttons">
+              <div
+                className="button-main"
+                onClick={() => this.handleBet('accept')}
+              >
+                Accept
+              </div>
+              <div
+                className="button-main"
+                onClick={() => this.handleBet('deny')}
+              >
+                Deny
+              </div>
             </div>
-            <div className="button-main" onClick={() => this.handleBet('deny')}>
-              Deny
+          )}
+        {this.props.status === 'active' &&
+          this.props.userId === bet.admin_user_id && (
+            <div className="flex-center handle-buttons">
+              <div className="button-main" onClick={() => this.handleEndBet()}>
+                End Bet
+              </div>
             </div>
-          </div>
-        )}
-        {this.props.status === 'active' && (
-          <div className="flex-center">
-            <div className="button-main" onClick={() => this.handleEndBet()}>
-              End Bet
-            </div>
-          </div>
-        )}
+          )}
         {this.state.showEndBet && (
           <EndBet close={this.closeEndBet.bind(this)} bet={bet} />
         )}

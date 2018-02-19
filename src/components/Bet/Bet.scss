@@ -1,3 +1,25 @@
 .bet-container {
-    padding: 20px
+    width: 100%;
 }
+
+.bet-text {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .bet-headers {
+    font-size: 1em;
+    margin-bottom: 5px;
+  }
+  
+  .name {
+    font-size: 1.4em;
+  }
+
+  .amount {
+      font-size: 2em;
+  }
+
+  .handle-buttons {
+    width: 90%;
+    margin: 10px auto 0;  }
