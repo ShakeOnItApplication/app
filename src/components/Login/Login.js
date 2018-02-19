@@ -23,7 +23,6 @@ class Login extends Component {
 
   login(info) {
     axios.post('/auth/login', info).then(response => {
-      console.log(response);
       if (response.data.user_id) {
         this.props.logIn(true);
       }
@@ -67,7 +66,6 @@ class Login extends Component {
   }
 
   render() {
-    console.log(this.state.email);
     return (
       <div className="flex-center login-wrapper">
         <LoginCard

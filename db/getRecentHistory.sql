@@ -1,0 +1,1 @@
+SELECT * FROM bets WHERE admin_user_id = ${id} AND winner IS NOT NULL OR opponent_user_id = ${id} AND winner IS NOT NULL LIMIT 3;

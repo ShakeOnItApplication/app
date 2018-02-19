@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import './Nav.css';
 import MakeBet from '../Home/MakeBet/MakeBet';
 import ProfileCard from '../Home/ProfileCard/ProfileCard';
+import History from '../History/History';
 
-export default class Home extends Component {
+export default class Nav extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -41,6 +42,7 @@ export default class Home extends Component {
         >
           Make Bet
         </button>
+        <History id={state.admin_user_id} />
       </div>
     );
   }

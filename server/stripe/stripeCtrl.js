@@ -6,11 +6,13 @@ const bcrypt = require('bcryptjs');
 
 const stripeCtrl = {
     registerUser: (req, res) => {
+      console.log(req.body);
       stripe.accounts.create({
         type: 'standard',
         country: 'US',
         email: req.body.email
       }, function(err, account) {
+        console.log('account error', err);
         if(!err){
         const stripe_account_id = account.id;
         req.body.stripe_account_id = stripe_account_id;
@@ -31,6 +33,7 @@ const stripeCtrl = {
                 function(err, card) {
                   if (!err){
                     const db = req.app.get('db');
+                    console.log(db);
                     bcrypt.hash(req.body.password, 10).then((hash) => {
                       req.body.password = hash;
                       db.registerUser(req.body)
@@ -126,7 +129,7 @@ const stripeCtrl = {
         const db = req.app.get('db');
         db.getStripeAccount({ id: req.body.id }).then(response => {
           const accountId = response[0].stripe_account_id;
-          const amountInCents = req.body.amount * 100;
+          const amountInCents = req.body.amount * 2 * 100;
           stripe.transfers .create({
             amount: amountInCents,
             currency: "usd",

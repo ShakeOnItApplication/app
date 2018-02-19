@@ -16,12 +16,18 @@ export default class PendingBets extends Component {
   componentDidMount() {
     if (this.props.id) {
       this.getBets(this.props.id);
+      this.setState({
+        user_id: this.props.id
+      });
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props !== nextProps) {
       this.getBets(nextProps.id);
+      this.setState({
+        user_id: nextProps.id
+      });
     }
   }
 
@@ -38,7 +44,12 @@ export default class PendingBets extends Component {
     const pendingBets = this.state.pendingBets.map((bet, idx) => {
       return (
         <GeneralCard key={bet.bet_id} id={'pending' + bet.bet_id}>
-          <Bet key={bet.bet_id} bet={bet} status={'pending'} />
+          <Bet
+            key={bet.bet_id}
+            userId={this.state.user_id}
+            bet={bet}
+            status={'pending'}
+          />
         </GeneralCard>
       );
     });
