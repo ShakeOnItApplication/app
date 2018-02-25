@@ -1,45 +1,30 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { getPastBets } from '../../ducks/reducer';
 
-export default class History extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      history: []
-    };
-  }
-
+class History extends Component {
   componentDidMount() {
-    if (this.props.id) {
-      this.getHistory(this.props.id);
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps !== this.props) {
-      this.getHistory(nextProps.id);
-    }
-  }
-
-  getHistory(id) {
-    axios.post('/api/getRecentHistory', { id }).then(response => {
-      console.log(response);
-      this.setState({
-        history: response.data
-      });
-    });
+    this.props.dispatch(getPastBets(this.props.userInfo.user_id));
   }
 
   render() {
-    const history = this.state.history.map((bet, idx) => {
-      return <div key={bet.bet_id}>{bet.bet_title}</div>;
+    console.log(this.props);
+    const history = this.props.pastBets.map((bet, idx) => {
+      return (
+        <div className="history" key={bet.bet_id}>
+          {bet.bet_title}
+        </div>
+      );
     });
     return (
-      <div>
+      <div className="history-wrapper">
         <div>Recent History</div>
         {history}
       </div>
     );
   }
 }
+
+export default withRouter(connect(state => state)(History));

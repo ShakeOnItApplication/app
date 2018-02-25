@@ -20,6 +20,12 @@ export default class Nav extends Component {
 
   render() {
     const state = this.props.state;
+    const name =
+      state.first_name[0].toUpperCase() +
+      state.first_name.substring(1, state.first_name.length) +
+      ' ' +
+      state.last_name[0].toUpperCase() +
+      state.last_name.substring(1, state.last_name.length);
     return (
       <div className="nav-container white shadow">
         <div className="nav-logo-container">
@@ -28,12 +34,12 @@ export default class Nav extends Component {
             alt="hands"
           />
         </div>
-        <ProfileCard name={state.name} />
+        <ProfileCard name={name} />
         {this.state.showMakeBet && (
           <MakeBet
             hideMakeBet={this.hideMakeBet.bind(this)}
-            admin_user_id={state.admin_user_id}
-            admin_info={state.admin_info}
+            admin_user_id={state.user_id}
+            admin_info={state}
           />
         )}
         <button
@@ -42,7 +48,7 @@ export default class Nav extends Component {
         >
           Make Bet
         </button>
-        <History id={state.admin_user_id} />
+        <History id={state.user_id} />
       </div>
     );
   }
