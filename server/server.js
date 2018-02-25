@@ -16,7 +16,7 @@ const app = express();
 app.use(cors());
 app.use(cookieParser());
 // this is the build command for when we host the app, npm start builds it for us, so we finna leave it commented out til we done
-// app.use(express.static(`${__dirname}/build`));
+app.use(express.static(`${__dirname}/build`));
 app.use(flash());
 
 const connectionString = process.env.DATABASE_URL;
@@ -67,7 +67,7 @@ app.post("/api/stripe/settleBet", stripeCtrl.settleBet);
 
 app.post("/api/getPendingBets", betCtrl.getPendingBets);
 app.post("/api/getActiveBets", betCtrl.getActiveBets);
-app.post('/api/getRecentHistory', betCtrl.getRecentHistory);
+app.post('/api/getPastBets', betCtrl.getPastBets);
 
 app.post("/api/getAllBets", (req, res) => {
   const db = req.app.get("db");
