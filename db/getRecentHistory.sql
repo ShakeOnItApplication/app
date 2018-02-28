@@ -1,1 +1,1 @@
-SELECT * FROM bets WHERE admin_user_id = ${id} AND winner IS NOT NULL OR opponent_user_id = ${id} AND winner IS NOT NULL LIMIT 5;
+SELECT * FROM bets WHERE admin_user_id = ${id} AND winner IS NOT NULL OR opponent_user_id = ${id} AND winner IS NOT NULL ORDER BY bet_id DESC LIMIT 5;

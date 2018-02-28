@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import GeneralCard from '../../GeneralCard/GeneralCard';
 import './MakeBet.css';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { getPendingBets } from '../../../ducks/reducer';
 
-export default class MakeBet extends Component {
+class MakeBet extends Component {
   constructor(props) {
     super(props);
 
@@ -27,14 +30,21 @@ export default class MakeBet extends Component {
   findUser() {
     document.getElementById('user-list').style.display = 'initial';
     const name = this.state.pending_user;
-    const first_name = name.substring(0, name.indexOf(' '));
+    const first_name =
+      name[0].toUpperCase() + name.substring(1, name.indexOf(' '));
     const last_name = name.substring(name.indexOf(' ') + 1, name.length);
-    axios.post('/api/findUser', { first_name, last_name }).then(response => {
-      console.log(response);
-      this.setState({
-        pending_users: response.data
+    axios
+      .post('/api/findUser', {
+        first_name,
+        last_name:
+          last_name[0].toUpperCase() + last_name.substring(1, last_name.length)
+      })
+      .then(response => {
+        console.log(response);
+        this.setState({
+          pending_users: response.data
+        });
       });
-    });
   }
 
   setPendingUser(user) {
@@ -65,6 +75,7 @@ export default class MakeBet extends Component {
         console.log(response.data);
         if (response.data) {
           this.props.hideMakeBet();
+          this.props.dispatch(getPendingBets(this.props.userInfo.user_id));
         } else {
         }
       });
@@ -120,3 +131,5 @@ export default class MakeBet extends Component {
     );
   }
 }
+
+export default withRouter(connect(state => state)(MakeBet));

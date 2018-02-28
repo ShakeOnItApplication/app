@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const HANDLE_LOG_IN = 'HANDLE_LOG_IN';
+const LOG_OUT = 'LOG_OUT';
 const PENDING_BETS = 'PENDING_BETS';
 const ACTIVE_BETS = 'ACTIVE_BETS';
 const PAST_BETS = 'PAST_BETS';
@@ -20,6 +21,8 @@ export default function reducer(state = initial_state, action) {
         loggedIn: action.payload.logIn,
         userInfo: action.payload.data
       });
+    case LOG_OUT:
+      return Object.assign({}, state, { loggedIn: action.payload });
     case PENDING_BETS:
       return Object.assign({}, state, { pendingBets: action.payload });
     case ACTIVE_BETS:
@@ -49,6 +52,21 @@ export function logIn() {
         dispatch(logInInfo({ data: response.data, logIn: true }));
       })
       .catch(error => dispatch(logInInfo({ data: {}, logIn: false })));
+  };
+}
+
+function logOutAction(payload) {
+  return {
+    type: LOG_OUT,
+    payload
+  };
+}
+
+export function logOut() {
+  return function(dispatch) {
+    return axios.get('/auth/logout').then(response => {
+      dispatch(logOutAction(false));
+    });
   };
 }
 

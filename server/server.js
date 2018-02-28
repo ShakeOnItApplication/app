@@ -68,6 +68,7 @@ app.post("/api/stripe/settleBet", stripeCtrl.settleBet);
 app.post("/api/getPendingBets", betCtrl.getPendingBets);
 app.post("/api/getActiveBets", betCtrl.getActiveBets);
 app.post('/api/getPastBets', betCtrl.getPastBets);
+app.post('/api/counterBet', betCtrl.counterBet);
 
 app.post("/api/getAllBets", (req, res) => {
   const db = req.app.get("db");

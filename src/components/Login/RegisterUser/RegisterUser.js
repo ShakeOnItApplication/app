@@ -31,13 +31,25 @@ export default class RegisterCard extends Component {
         <input
           className="login-input"
           type="text"
-          onChange={e => this.setState({ first_name: e.target.value })}
+          onChange={e =>
+            this.setState({
+              first_name:
+                e.target.value[0].toUpperCase() +
+                e.target.value.substring(1, e.target.value.length)
+            })
+          }
         />
         <div className="input-title">Last Name</div>
         <input
           className="login-input"
           type="text"
-          onChange={e => this.setState({ last_name: e.target.value })}
+          onChange={e =>
+            this.setState({
+              last_name:
+                e.target.value[0].toUpperCase() +
+                e.target.value.substring(1, e.target.value.length)
+            })
+          }
         />
         <button
           className="button-main"

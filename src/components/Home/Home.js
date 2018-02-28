@@ -10,7 +10,6 @@ import { logIn } from '../../ducks/reducer';
 
 class Home extends Component {
   render() {
-    console.log(this.props);
     return (
       <div className="home-container">
         <Nav state={this.props.userInfo} />

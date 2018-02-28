@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './Bet.css';
+import CounterBet from './CounterBet';
 import EndBet from '../EndBet/EndBet';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { getPendingBets, getActiveBets } from '../../ducks/reducer';
 
-export default class Bet extends Component {
+class Bet extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showEndBet: false
+      showEndBet: false,
+      showCounterBet: false
     };
   }
 
@@ -20,7 +25,8 @@ export default class Bet extends Component {
   handleBet(decision) {
     this.props.bet.decision = decision;
     axios.post('/api/stripe/handleBet', this.props.bet).then(response => {
-      console.log(response);
+      this.props.dispatch(getPendingBets(this.props.userInfo.user_id));
+      this.props.dispatch(getActiveBets(this.props.userInfo.user_id));
     });
   }
 
@@ -33,6 +39,13 @@ export default class Bet extends Component {
       showEndBet: true
     });
   }
+
+  toggleCounterBet() {
+    this.setState({
+      showCounterBet: !this.state.showCounterBet
+    });
+  }
+
   closeEndBet() {
     this.setState({
       showEndBet: false
@@ -56,31 +69,47 @@ export default class Bet extends Component {
               {' '}
               {bet.admin_user_id === this.props.userId ? (
                 <div>
-                  <div className="bet-headers">Awaiting:</div>
+                  <div className="bet-headers">Awaiting</div>
                   <div className="name">{opponent_name}</div>
                 </div>
               ) : (
                 <div>
-                  <div className="bet-headers">Against:</div>
+                  <div className="bet-headers">Against</div>
                   <div className="name">{admin_name}</div>
                 </div>
               )}
             </div>
           </div>
           <div className="bet-text">
-            <div className="bet-headers">Bet:</div>
+            <div className="bet-headers">Bet</div>
             <div className="name"> {bet.bet_title} </div>
           </div>
-          <div className="amount"> ${bet.amount} </div>
+          {this.props.status === 'pending' ? (
+            <div className="bet-text">
+              <div className="bet-headers">Wager</div>
+              <div className="amount"> ${bet.amount} </div>
+            </div>
+          ) : (
+            <div className="bet-text">
+              <div className="bet-headers">Pot</div>
+              <div className="amount"> ${bet.amount * 2} </div>
+            </div>
+          )}
         </div>
         {this.props.status === 'pending' &&
           this.props.userId !== bet.admin_user_id && (
-            <div className="flex-around handle-buttons">
+            <div className="flex-center handle-buttons">
               <div
                 className="button-main"
                 onClick={() => this.handleBet('accept')}
               >
                 Accept
+              </div>
+              <div
+                className="button-main"
+                onClick={() => this.toggleCounterBet()}
+              >
+                Counter
               </div>
               <div
                 className="button-main"
@@ -101,7 +130,15 @@ export default class Bet extends Component {
         {this.state.showEndBet && (
           <EndBet close={this.closeEndBet.bind(this)} bet={bet} />
         )}
+        {this.state.showCounterBet && (
+          <CounterBet
+            hideCounterBet={this.toggleCounterBet.bind(this)}
+            bet={bet}
+          />
+        )}
       </div>
     );
   }
 }
+
+export default withRouter(connect(state => state)(Bet));

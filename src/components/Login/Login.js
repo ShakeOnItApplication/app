@@ -24,7 +24,7 @@ class Login extends Component {
   login(info) {
     axios.post('/auth/login', info).then(response => {
       if (response.data.user_id) {
-        this.props.logIn(true);
+        this.props.dispatch(logIn(true));
       }
     });
   }
@@ -45,7 +45,7 @@ class Login extends Component {
         .then(response => {
           console.log(response);
           if (response.data.user_id) {
-            this.props.logIn(true);
+            this.props.dispatch(logIn());
           }
         });
     });
@@ -66,6 +66,7 @@ class Login extends Component {
   }
 
   render() {
+    console.log(this.props);
     return (
       <div className="flex-center login-wrapper">
         <LoginCard
@@ -85,4 +86,4 @@ class Login extends Component {
   }
 }
 
-export default withRouter(connect(null, { logIn })(Login));
+export default withRouter(connect(state => state)(Login));

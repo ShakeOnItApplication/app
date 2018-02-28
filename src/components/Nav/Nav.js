@@ -3,8 +3,11 @@ import './Nav.css';
 import MakeBet from '../Home/MakeBet/MakeBet';
 import ProfileCard from '../Home/ProfileCard/ProfileCard';
 import History from '../History/History';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { logOut } from '../../ducks/reducer';
 
-export default class Nav extends Component {
+class Nav extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,12 +23,7 @@ export default class Nav extends Component {
 
   render() {
     const state = this.props.state;
-    const name =
-      state.first_name[0].toUpperCase() +
-      state.first_name.substring(1, state.first_name.length) +
-      ' ' +
-      state.last_name[0].toUpperCase() +
-      state.last_name.substring(1, state.last_name.length);
+    const name = state.first_name + ' ' + state.last_name;
     return (
       <div className="nav-container white shadow">
         <div className="nav-logo-container">
@@ -49,7 +47,12 @@ export default class Nav extends Component {
           Make Bet
         </button>
         <History id={state.user_id} />
+        <div className="nav-link" onClick={() => this.props.dispatch(logOut())}>
+          Log out
+        </div>
       </div>
     );
   }
 }
+
+export default withRouter(connect(state => state)(Nav));

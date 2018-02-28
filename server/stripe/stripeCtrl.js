@@ -33,7 +33,6 @@ const stripeCtrl = {
                 function(err, card) {
                   if (!err){
                     const db = req.app.get('db');
-                    console.log(db);
                     bcrypt.hash(req.body.password, 10).then((hash) => {
                       req.body.password = hash;
                       db.registerUser(req.body)
@@ -122,7 +121,10 @@ const stripeCtrl = {
         
         })
       } else {
-        return;
+        req.body.status = 'denied';
+        db.setBetStatus(req.body).then((response)=>{
+          res.send('denied');
+        });
       }
       },
       settleBet: (req, res) => {

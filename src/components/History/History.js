@@ -13,15 +13,26 @@ class History extends Component {
     console.log(this.props);
     const history = this.props.pastBets.map((bet, idx) => {
       return (
-        <div className="history" key={bet.bet_id}>
-          {bet.bet_title}
+        <div className="history flex-between" key={bet.bet_id}>
+          <div>{bet.bet_title}</div>
+          {this.props.userInfo.user_id === bet.winner ? (
+            <div className="win">+${bet.amount * 2}</div>
+          ) : (
+            <div className="lose">-${bet.amount * 2}</div>
+          )}
         </div>
       );
     });
     return (
       <div className="history-wrapper">
-        <div>Recent History</div>
-        {history}
+        {this.props.pastBets.length === 0 ? (
+          <div />
+        ) : (
+          <div>
+            <div>Recent History</div>
+            {history}
+          </div>
+        )}
       </div>
     );
   }

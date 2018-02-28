@@ -11,7 +11,6 @@ export default class ProfileCard extends Component {
     return (
       <div>
         <div className="title">{this.props.name}</div>
-        <div>Account Balance: $35</div>
       </div>
     );
   }

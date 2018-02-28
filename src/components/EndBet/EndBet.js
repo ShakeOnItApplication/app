@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { getActiveBets, getPastBets } from '../../ducks/reducer';
 
-export default class EndBet extends Component {
-  constructor(props) {
-    super(props);
-  }
-
+class EndBet extends Component {
   settleBet(id, amount, bet_id) {
     axios
       .post('/api/stripe/settleBet', { id, amount, bet_id })
       .then(response => {
-        console.log(response);
+        this.props.dispatch(getActiveBets(this.props.userInfo.user_id));
+        this.props.dispatch(getPastBets(this.props.userInfo.user_id));
         this.props.close();
       });
   }
@@ -48,3 +48,5 @@ export default class EndBet extends Component {
     );
   }
 }
+
+export default withRouter(connect(state => state)(EndBet));
