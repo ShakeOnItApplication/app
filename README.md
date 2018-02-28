@@ -6,4 +6,4 @@ The app is built with React, Redux, Thunk middleware, Node, and PostsgreSQL.
 
 The payments are all done through the Stripe API for now - eventually the goal will be to create easy transfers from all of the most popular services, cryptocurrencies, and banks.
 
-My personal goal in developing Shake On It was to develop stronger development skills using React and Redux, and I will continue to clean the code base and implement best practices into the future. 
+My personal goal in developing Shake On It was to develop stronger development skills using React and Redux. I'm continuing to clean the code base and implement best practices and I plan to do so into the future. 
