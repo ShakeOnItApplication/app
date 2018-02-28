@@ -51,8 +51,7 @@
     "build": "npm-run-all build-css build-js",
     "test": "jest --no-cache",
     "eject": "react-scripts eject",
-    "prod": "NODE_ENV=production node server.js",
-    "postinstall": "webpack -p"    
+    "prod": "NODE_ENV=production node server.js"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
