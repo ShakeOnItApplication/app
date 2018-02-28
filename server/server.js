@@ -13,6 +13,8 @@ const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
 const app = express();
 
+app.engine('html', require('ejs').renderFile);
+
 app.use(cors());
 app.use(cookieParser());
 // this is the build command for when we host the app, npm start builds it for us, so we finna leave it commented out til we done
