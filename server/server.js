@@ -147,6 +147,7 @@ app.get("/user/session", isLoggedIn, (req, res) => {
     });
 });
 
+app.get('*', (req, res) => res.sendFile(path.resolve('build', 'index.html')));
 
 module.exports = app;
 
