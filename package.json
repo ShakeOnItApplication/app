@@ -2,7 +2,7 @@
   "name": "shake-on-it",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://0.0.0.0:3030",
+  "proxy": "http://localhost:3030",
   "main": "server.js",
   "dependencies": {
     "axios": "^0.17.1",
@@ -50,7 +50,7 @@
     "start-js": "react-scripts start",
     "start": "npm-run-all -p watch-css start-js",
     "build-js": "react-scripts build",
-    "build": "react-scripts build",
+    "build": "npm-run-all build-css build-js react-scripts build",
     "test": "jest --no-cache",
     "eject": "react-scripts eject",
     "prod": "NODE_ENV=production node server.js"
