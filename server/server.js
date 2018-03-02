@@ -63,7 +63,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.get('/', function(req, res) {
-  res.render('index.html');
+  res.render('../public/index.html');
 });
 
 const stripeCtrl = require("./stripe/stripeCtrl");
