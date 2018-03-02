@@ -1,4 +1,4 @@
-const app = require('../server');
+const app = require('../../server');
 const stripe = require('stripe')(process.env.stripe_id);
 const bcrypt = require('bcryptjs');
 
