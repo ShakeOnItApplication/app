@@ -9,6 +9,7 @@ const { json } = require("body-parser");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcryptjs");
+const path = require('path');
 const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
 const app = express();
@@ -18,7 +19,10 @@ app.engine('html', require('ejs').renderFile);
 app.use(cors());
 app.use(cookieParser());
 // this is the build command for when we host the app, npm start builds it for us, so we finna leave it commented out til we done
-app.use(express.static(`${__dirname}/build`));
+app.use(express.static(path.join(__dirname, 'build')));
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 app.use(flash());
 
 const connectionString = process.env.DATABASE_URL;
