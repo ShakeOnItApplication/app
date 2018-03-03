@@ -15,7 +15,7 @@ const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
 const app = express();
 
-app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'ejs');
 
 app.use(cors());
 app.use(cookieParser());
