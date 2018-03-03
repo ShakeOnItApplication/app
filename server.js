@@ -20,7 +20,7 @@ app.use(cors());
 app.use(cookieParser());
 // this is the build command for when we host the app, npm start builds it for us, so we finna leave it commented out til we done
 
-app.use(express.static(path.resolve(__dirname, 'build', 'index.html')));
+app.use(express.static(path.resolve(__dirname, 'public', 'index.html')));
 // app.get('/*', function (req, res) {
 //   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 // });
@@ -66,7 +66,7 @@ app.use(cookieParser());
 app.get('/*', (req, res) => {
   
     console.log('hi from app.get')
-    res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+    res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
   });
 
 const stripeCtrl = require("./server/stripe/stripeCtrl");
