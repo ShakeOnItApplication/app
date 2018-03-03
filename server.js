@@ -70,8 +70,8 @@ app.use(cookieParser());
 app.get('/*', (req, res) => {
   console.log(__dirname);
     console.log('hi from app.get')
-    res.sendFile(__dirname + "/build/index.html")
-  });
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 const stripeCtrl = require("./server/stripe/stripeCtrl");
 const betCtrl = require("./server/bets/betCtrl");
