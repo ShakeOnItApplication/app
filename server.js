@@ -67,11 +67,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// app.get('/*', (req, res) => {
-//   console.log(__dirname);
-//     console.log('hi from app.get')
-//     res.sendFile(__dirname + "/build/")
-//   });
+app.get('/*', (req, res) => {
+  console.log(__dirname);
+    console.log('hi from app.get')
+    res.sendFile(__dirname + "/build")
+  });
 
 const stripeCtrl = require("./server/stripe/stripeCtrl");
 const betCtrl = require("./server/bets/betCtrl");
