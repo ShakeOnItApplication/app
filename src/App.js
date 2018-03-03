@@ -16,17 +16,7 @@ class App extends Component {
 
   render() {
     console.log(this.props);
-    return (
-      <div>
-        {this.props.loggedIn ? (
-          <div>
-            <Home />
-          </div>
-        ) : (
-          <Login />
-        )}
-      </div>
-    );
+    return <div>{this.props.loggedIn ? <div>{router}</div> : <Login />}</div>;
   }
 }
 
