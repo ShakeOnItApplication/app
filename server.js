@@ -67,7 +67,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.get('/*', (req, res) => {
-  
+  console.log(__dirname);
     console.log('hi from app.get')
     res.sendFile(path.resolve(__dirname));
   });
