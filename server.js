@@ -66,8 +66,6 @@ app.use(cookieParser());
 app.get('/*', (req, res) => {
   
     console.log('hi from app.get')
-    console.log(req)
-    console.log(res)
     res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
   });
 
