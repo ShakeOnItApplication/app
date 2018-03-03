@@ -35,7 +35,8 @@
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "stripe": "^5.4.0",
-    "webpack": "^3.10.0"
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^1.14.0"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,json,css}": [
@@ -53,7 +54,8 @@
     "build": "react-scripts build",
     "test": "jest --no-cache",
     "eject": "react-scripts eject",
-    "prod": "NODE_ENV=production node server.js"
+    "prod": "NODE_ENV=production node server.js",
+    "postinstall": "webpack -p"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

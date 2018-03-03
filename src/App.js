@@ -9,6 +9,7 @@ import router from './router';
 
 class App extends Component {
   componentDidMount() {
+    console.log('mount');
     this.props.dispatch(logIn());
   }
 
