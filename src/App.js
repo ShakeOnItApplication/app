@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { logIn } from './ducks/reducer';
 
 import Login from './components/Login/Login';
+import Home from './components/Home/Home';
 import router from './router';
 
 class App extends Component {
@@ -15,7 +16,17 @@ class App extends Component {
 
   render() {
     console.log(this.props);
-    return <div>{this.props.loggedIn ? <div>{router}</div> : <Login />}</div>;
+    return (
+      <div>
+        {this.props.loggedIn ? (
+          <div>
+            <Home />
+          </div>
+        ) : (
+          <Login />
+        )}
+      </div>
+    );
   }
 }
 
