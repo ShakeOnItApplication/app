@@ -15,13 +15,12 @@ const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
 const app = express();
 
-app.set('view engine', 'ejs');
 
 app.use(cors());
 app.use(cookieParser());
 // this is the build command for when we host the app, npm start builds it for us, so we finna leave it commented out til we done
 
-app.use(express.static(path.join(__dirname, '/build')));
+app.use(express.static(path.resolve(__dirname, '..', 'build', 'index.html')));
 // app.get('/*', function (req, res) {
 //   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 // });
@@ -64,9 +63,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// app.get('/', function(req, res) {
-//   res.render('../public/index.html');
-// });
+app.get('/*', (req, res) => {
+  
+    console.log('hi from app.get')
+    console.log(req)
+    console.log(res)
+    res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
+  });
 
 const stripeCtrl = require("./server/stripe/stripeCtrl");
 const betCtrl = require("./server/bets/betCtrl");
