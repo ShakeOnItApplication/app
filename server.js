@@ -69,7 +69,7 @@ app.use(cookieParser());
 app.get('/*', (req, res) => {
   
     console.log('hi from app.get')
-    res.sendFile(path.resolve(__dirname, '/'));
+    res.sendFile(path.resolve(__dirname, '../build'));
   });
 
 const stripeCtrl = require("./server/stripe/stripeCtrl");
