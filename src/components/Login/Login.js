@@ -17,11 +17,13 @@ class Login extends Component {
       formErrors: { email: 'Invalid Email Format', password: 'Enter Password' },
       emailValid: false,
       passwordValid: false,
-      formValid: false
+      formValid: false,
+      loadingLogin: false
     };
   }
 
   login(info) {
+    this.setState({ loadingLogin: true });
     axios.post('/auth/login', info).then(response => {
       if (response.data.user_id) {
         this.props.dispatch(logIn(true));
@@ -30,29 +32,30 @@ class Login extends Component {
   }
 
   registerUser(info) {
-    this.setState({ registerCardInfo: info }, function afterStateChange() {
-      axios
-        .post('/api/registerUser', {
-          email: this.state.registerInfo.email,
-          password: this.state.registerInfo.password,
-          first_name: this.state.registerInfo.first_name,
-          last_name: this.state.registerInfo.last_name,
-          number: this.state.registerCardInfo.number,
-          exp_month: this.state.registerCardInfo.exp_month,
-          exp_year: this.state.registerCardInfo.exp_year,
-          cvc: this.state.registerCardInfo.cvc
-        })
-        .then(response => {
-          console.log(response);
-          this.props.dispatch(
-            registerLogin({
-              user_id: response.data.user_id,
-              first_name: this.state.registerInfo.first_name,
-              last_name: this.state.registerInfo.last_name
-            })
-          );
-        });
-    });
+    this.setState(
+      { registerCardInfo: info, loadingLogin: true },
+      function afterStateChange() {
+        axios
+          .post('/api/registerUser', {
+            email: this.state.registerInfo.email,
+            password: this.state.registerInfo.password,
+            first_name: this.state.registerInfo.first_name,
+            last_name: this.state.registerInfo.last_name,
+            number: this.state.registerCardInfo.number,
+            exp_month: this.state.registerCardInfo.exp_month,
+            exp_year: this.state.registerCardInfo.exp_year,
+            cvc: this.state.registerCardInfo.cvc
+          })
+          .then(response => {
+            if (response.data.user_id) {
+              this.login({
+                email: this.state.registerInfo.email,
+                password: this.state.registerInfo.password
+              });
+            }
+          });
+      }
+    );
   }
 
   registerInfo(info) {
@@ -70,12 +73,12 @@ class Login extends Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <div className="flex-center login-wrapper">
         <LoginCard
           toggleLoginCard={this.toggleLoginCard}
           login={this.login.bind(this)}
+          loadingLogin={this.state.loadingLogin}
         />
         <RegisterUser
           toggleLoginCard={this.toggleLoginCard}
@@ -84,6 +87,7 @@ class Login extends Component {
         <RegisterCard
           toggleLoginCard={this.toggleLoginCard}
           registerUser={this.registerUser.bind(this)}
+          loadingLogin={this.state.loadingLogin}
         />
       </div>
     );

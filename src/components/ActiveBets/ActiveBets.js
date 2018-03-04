@@ -27,12 +27,12 @@ class ActiveBets extends Component {
     });
     return (
       <div className="flex-center-column">
-        {this.props.activeBets.length > 0 && (
-          <div className="pending-wrapper">
-            <div className="section-title align-start">Active Bets</div>
-            {activeBets}
+        <div className="pending-wrapper">
+          <div className="section-title align-start">
+            Active Bets ({this.props.activeBets.length})
           </div>
-        )}
+          {activeBets}
+        </div>
       </div>
     );
   }
