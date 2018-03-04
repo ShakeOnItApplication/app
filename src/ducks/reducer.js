@@ -62,6 +62,7 @@ export function logIn() {
 }
 
 export function registerLogin(payload) {
+  console.log(payload);
   return {
     type: HANDLE_REGISTER_USER,
     payload
