@@ -4,6 +4,7 @@ const HANDLE_LOG_IN = 'HANDLE_LOG_IN';
 const LOG_OUT = 'LOG_OUT';
 const PENDING_BETS = 'PENDING_BETS';
 const ACTIVE_BETS = 'ACTIVE_BETS';
+const HANDLE_REGISTER_USER = 'HANDLE_REGISTER_USER';
 const PAST_BETS = 'PAST_BETS';
 
 const initial_state = {
@@ -20,6 +21,11 @@ export default function reducer(state = initial_state, action) {
       return Object.assign({}, state, {
         loggedIn: action.payload.logIn,
         userInfo: action.payload.data
+      });
+    case HANDLE_REGISTER_USER:
+      return Object.assign({}, state, {
+        loggedIn: true,
+        userInfo: action.payload
       });
     case LOG_OUT:
       return Object.assign({}, state, { loggedIn: action.payload });
@@ -52,6 +58,13 @@ export function logIn() {
         dispatch(logInInfo({ data: response.data, logIn: true }));
       })
       .catch(error => dispatch(logInInfo({ data: {}, logIn: false })));
+  };
+}
+
+export function registerLogin(payload) {
+  return {
+    type: HANDLE_REGISTER_USER,
+    payload
   };
 }
 

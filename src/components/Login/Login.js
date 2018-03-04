@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { logIn } from '../../ducks/reducer';
+import { logIn, registerLogin } from '../../ducks/reducer';
 import './Login.css';
 import RegisterUser from './RegisterUser/RegisterUser';
 import RegisterCard from './RegisterUser/RegisterCard';
@@ -43,12 +43,11 @@ class Login extends Component {
           cvc: this.state.registerCardInfo.cvc
         })
         .then(response => {
-          setTimeout(function() {
-            this.login({
-              email: this.state.registerInfo.email,
-              password: this.state.registerInfo.password
-            });
-          }, 2000);
+          this.props.registerLogin({
+            user_id: response.data.user_id,
+            first_name: this.state.registerInfo.first_name,
+            last_name: this.state.registerInfo.last_name
+          });
         });
     });
   }
