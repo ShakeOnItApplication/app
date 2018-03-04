@@ -13,7 +13,7 @@ export default class CounterBet extends Component {
   counterBet() {
     this.props.bet.amount = this.state.amount;
     axios.post('/api/counterBet', this.props.bet).then(response => {
-      console.log(response);
+      this.props.hideCounterBet();
     });
   }
 
@@ -25,11 +25,9 @@ export default class CounterBet extends Component {
       <div className="modal-wrapper" id="make-counter-bet">
         <div className="modal">
           <div className="title">Make Counter Bet</div>
-          <div className="input-title">Bet</div>
-          <div className="title">{bet.bet_title}</div>
-          <div className="input-title">Against</div>
+          <div className="title">Bet: {bet.bet_title}</div>
           <div className="title">
-            {admin_name.first_name} {admin_name.last_name}
+            Against: {admin_name.first_name} {admin_name.last_name}
           </div>
 
           <div className="input-title">How much are you countering?</div>

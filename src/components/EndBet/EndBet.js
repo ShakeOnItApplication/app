@@ -3,9 +3,21 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getActiveBets, getPastBets } from '../../ducks/reducer';
+import { BarLoader } from 'react-spinners';
 
 class EndBet extends Component {
-  settleBet(id, amount, bet_id) {
+  constructor() {
+    super();
+    this.state = {
+      loading: false,
+      name: ''
+    };
+  }
+  settleBet(name, id, amount, bet_id) {
+    this.setState({
+      loading: true,
+      name
+    });
     axios
       .post('/api/stripe/settleBet', { id, amount, bet_id })
       .then(response => {
@@ -17,33 +29,61 @@ class EndBet extends Component {
 
   render() {
     const bet = this.props.bet;
-    const adminName = JSON.parse(bet.admin_info);
-    const opponentName = JSON.parse(bet.opponent_info);
+    const adminNameSetup = JSON.parse(bet.admin_info);
+    const adminName =
+      adminNameSetup.first_name + ' ' + adminNameSetup.last_name;
+    const opponentNameSetup = JSON.parse(bet.opponent_info);
+    const opponentName =
+      opponentNameSetup.first_name + ' ' + opponentNameSetup.last_name;
     console.log(bet);
     return (
       <div className="modal-wrapper" id="end-bet">
-        <div className="modal">
-          <div>Who won?</div>
-          <div
-            className="button-main"
-            onClick={() =>
-              this.settleBet(bet.admin_user_id, bet.amount, bet.bet_id)
-            }
-          >
-            {adminName.first_name + ' ' + adminName.last_name}
+        {this.state.loading ? (
+          <div className="modal">
+            <div className="input-title">
+              Sending Payments to {this.state.name}...
+            </div>
+            <BarLoader
+              loading={this.state.loading}
+              height={20}
+              color={'#4a4ae6'}
+            />
           </div>
-          <div
-            className="button-main"
-            onClick={() =>
-              this.settleBet(bet.opponent_user_id, bet.amount, bet.bet_id)
-            }
-          >
-            {opponentName.first_name + ' ' + opponentName.last_name}
+        ) : (
+          <div className="modal">
+            <div>Who won?</div>
+            <div
+              className="button-main"
+              onClick={() =>
+                this.settleBet(
+                  adminName,
+                  bet.admin_user_id,
+                  bet.amount,
+                  bet.bet_id
+                )
+              }
+            >
+              {adminName}
+            </div>
+            <div
+              className="button-main"
+              onClick={() =>
+                this.settleBet(
+                  opponentName,
+                  bet.opponent_user_id,
+                  bet.amount,
+                  bet.bet_id
+                )
+              }
+            >
+              {opponentName}
+            </div>
+
+            <div className="nav-link" onClick={() => this.props.close()}>
+              Close
+            </div>
           </div>
-          <div className="nav-link" onClick={() => this.props.close()}>
-            Close
-          </div>
-        </div>
+        )}
       </div>
     );
   }

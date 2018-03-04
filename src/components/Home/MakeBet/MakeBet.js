@@ -5,6 +5,7 @@ import './MakeBet.css';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getPendingBets } from '../../../ducks/reducer';
+import { BarLoader } from 'react-spinners';
 
 class MakeBet extends Component {
   constructor(props) {
@@ -14,7 +15,9 @@ class MakeBet extends Component {
       pending_users: [],
       pending_user: null,
       admin_user_id: this.props.admin_user_id,
-      admin_info: this.props.admin_info
+      admin_info: this.props.admin_info,
+      loadingUsers: false,
+      loadingPropose: false
     };
   }
 
@@ -29,6 +32,7 @@ class MakeBet extends Component {
 
   findUser() {
     document.getElementById('user-list').style.display = 'initial';
+    this.setState({ loadingUsers: true });
     const name = this.state.pending_user;
     const first_name =
       name[0].toUpperCase() + name.substring(1, name.indexOf(' '));
@@ -42,6 +46,7 @@ class MakeBet extends Component {
       .then(response => {
         console.log(response);
         this.setState({
+          loadingUsers: false,
           pending_users: response.data
         });
       });
@@ -62,6 +67,7 @@ class MakeBet extends Component {
   }
 
   proposeBet() {
+    this.setState({ loadingPropose: true });
     axios
       .post('/api/stripe/placeBet', {
         admin_user_id: this.state.admin_user_id,
@@ -104,7 +110,17 @@ class MakeBet extends Component {
             type="text"
             onChange={e => this.setState({ pending_user: e.target.value })}
           />
-          <div id="user-list">{pending_users}</div>
+          {this.state.loadingUsers ? (
+            <div id="user-list" className="text-center">
+              <BarLoader
+                loading={this.props.loadingUsers}
+                height={20}
+                color={'#000000'}
+              />
+            </div>
+          ) : (
+            <div id="user-list">{pending_users}</div>
+          )}
           <button className="button-main" onClick={() => this.findUser()}>
             Find User
           </button>
@@ -120,9 +136,19 @@ class MakeBet extends Component {
             type="text"
             onChange={e => this.setState({ amount: e.target.value })}
           />
-          <button className="button-main" onClick={() => this.proposeBet()}>
-            Propose Bet
-          </button>
+          {this.state.loadingPropose ? (
+            <button className="button-main">
+              <BarLoader
+                loading={this.props.loadingPropose}
+                height={20}
+                color={'#FFF'}
+              />
+            </button>
+          ) : (
+            <button className="button-main" onClick={() => this.proposeBet()}>
+              Propose Bet
+            </button>
+          )}
           <div className="nav-link" onClick={this.props.hideMakeBet}>
             Close
           </div>
