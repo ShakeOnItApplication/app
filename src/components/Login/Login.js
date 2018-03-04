@@ -43,10 +43,10 @@ class Login extends Component {
           cvc: this.state.registerCardInfo.cvc
         })
         .then(response => {
-          console.log(response);
-          if (response.data.user_id) {
-            this.props.dispatch(logIn());
-          }
+          this.login({
+            email: this.state.registerInfo.email,
+            password: this.state.registerInfo.password
+          });
         });
     });
   }
