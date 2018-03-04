@@ -43,10 +43,12 @@ class Login extends Component {
           cvc: this.state.registerCardInfo.cvc
         })
         .then(response => {
-          this.login({
-            email: this.state.registerInfo.email,
-            password: this.state.registerInfo.password
-          });
+          setTimeout(function() {
+            this.login({
+              email: this.state.registerInfo.email,
+              password: this.state.registerInfo.password
+            });
+          }, 2000);
         });
     });
   }
