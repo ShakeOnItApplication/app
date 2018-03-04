@@ -43,11 +43,13 @@ class Login extends Component {
           cvc: this.state.registerCardInfo.cvc
         })
         .then(response => {
-          this.props.registerLogin({
-            user_id: response.data.user_id,
-            first_name: this.state.registerInfo.first_name,
-            last_name: this.state.registerInfo.last_name
-          });
+          this.props.dispatch(
+            registerLogin({
+              user_id: response.data.user_id,
+              first_name: this.state.registerInfo.first_name,
+              last_name: this.state.registerInfo.last_name
+            })
+          );
         });
     });
   }
