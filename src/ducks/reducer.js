@@ -42,6 +42,7 @@ function logInInfo(payload) {
 }
 
 export function logIn() {
+  console.log('login reducer');
   return function(dispatch) {
     return axios
       .get('/user/session')
